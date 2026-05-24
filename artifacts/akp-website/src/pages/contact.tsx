@@ -11,6 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { MapPin, Phone, Mail, Clock, Linkedin, Facebook, Twitter, Instagram, MessageCircle, CheckCircle } from "lucide-react";
 import { createContactMessage } from "@/lib/firestore";
+import { sendContactNotification } from "@/lib/emailNotify";
 import { toast } from "sonner";
 
 const formSchema = z.object({
@@ -83,6 +84,14 @@ export default function Contact() {
         message: data.message,
         source: "contact_form",
       });
+      sendContactNotification({
+        fromName: data.name,
+        fromEmail: data.email,
+        phone: data.phone,
+        service: data.service,
+        message: data.message,
+        source: "Contact Form",
+      }).catch(() => {});
       setSubmitted(true);
     } catch {
       toast.error("Failed to send message. Please try again or call us directly.");

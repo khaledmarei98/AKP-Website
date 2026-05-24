@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { MessageCircle, X, Send, Bot, Sparkles, ChevronRight, User, ArrowLeft, CheckCircle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { createContactMessage } from "@/lib/firestore";
+import { sendContactNotification } from "@/lib/emailNotify";
 import { toast } from "sonner";
 
 interface Message {
@@ -99,13 +100,24 @@ export default function ChatWidget() {
     setEscalating(true);
     try {
       const transcript = messages.map((m) => ({ from: m.from, text: m.text, timestamp: m.timestamp }));
+      const noteText = escalateNote || "Requested to speak with a human advisor.";
       await createContactMessage({
         name: escalateName,
         email: escalateEmail,
-        message: escalateNote || "Requested to speak with a human advisor.",
+        message: noteText,
         source: "chat_escalation",
         chatTranscript: transcript,
       });
+      const chatSummary = transcript
+        .map((t) => `[${t.from === "user" ? "Visitor" : "Bot"}] ${t.text}`)
+        .join("\n");
+      sendContactNotification({
+        fromName: escalateName,
+        fromEmail: escalateEmail,
+        message: noteText,
+        source: "Chat Escalation",
+        chatSummary,
+      }).catch(() => {});
       setEscalated(true);
     } catch {
       toast.error("Could not send your request. Please email us at info@akp-consulting.com.");
