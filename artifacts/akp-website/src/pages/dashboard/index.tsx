@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { motion } from "framer-motion";
 import { useAuth } from "@/context/AuthContext";
@@ -6,8 +6,9 @@ import {
   LayoutDashboard, BookOpen, Calendar, FolderOpen, Receipt, Bell, HeadphonesIcon,
   Settings, ChevronRight, X, Upload, Download, TrendingUp, Users, Clock,
   BarChart3, CheckCircle, AlertCircle, FileText, Plus, ArrowUpRight,
-  LogOut, Shield, Play, Star, Library, Newspaper, ClipboardList, Mail, MessageSquare, Eye
+  LogOut, Shield, Play, Star, Library, Newspaper, ClipboardList, Mail, MessageSquare, Eye, Phone, Loader2
 } from "lucide-react";
+import { toast } from "sonner";
 import AdminLibrary from "@/components/dashboard/AdminLibrary";
 import AdminArticles from "@/components/dashboard/AdminArticles";
 import AdminBookings from "@/components/dashboard/AdminBookings";
@@ -807,74 +808,149 @@ export default function Dashboard() {
 
           {/* SETTINGS */}
           {activeSection === "settings" && (
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}>
-              <SectionTitle title="Account Settings" />
-              <div className="grid lg:grid-cols-2 gap-6">
-                <div className="bg-card border border-border rounded-2xl p-6">
-                  <h3 className="font-semibold text-foreground mb-5 flex items-center gap-2"><Users className="w-4 h-4 text-accent" /> Profile Information</h3>
-                  <div className="space-y-4">
-                    {[
-                      { label: "Full Name", value: user?.name ?? "Ahmed Karim", type: "text" },
-                      { label: "Email Address", value: user?.email ?? "ahmed@company.com", type: "email" },
-                      { label: "Company", value: user?.company ?? "Delta Industries", type: "text" },
-                      { label: "Phone", value: "+20 10 0000 0000", type: "tel" },
-                    ].map((field) => (
-                      <div key={field.label}>
-                        <label className="block text-xs text-muted-foreground mb-1.5">{field.label}</label>
-                        <input type={field.type} defaultValue={field.value} className="w-full bg-muted border border-border rounded-xl px-4 py-2.5 text-foreground text-sm focus:outline-none focus:border-accent transition-colors" />
-                      </div>
-                    ))}
-                    <button className="w-full py-2.5 rounded-xl gold-gradient text-[#0A1628] font-semibold text-sm hover:opacity-90 transition-opacity" data-testid="button-save-profile">
-                      Save Changes
-                    </button>
-                  </div>
-                </div>
-
-                <div className="space-y-4">
-                  <div className="bg-card border border-border rounded-2xl p-6">
-                    <h3 className="font-semibold text-foreground mb-4 flex items-center gap-2"><Shield className="w-4 h-4 text-accent" /> Security</h3>
-                    <div className="space-y-3">
-                      <button className="w-full flex items-center justify-between py-3 text-sm text-foreground hover:text-accent transition-colors" data-testid="button-change-password">
-                        <span>Change Password</span><ChevronRight className="w-4 h-4" />
-                      </button>
-                      <button className="w-full flex items-center justify-between py-3 text-sm text-foreground hover:text-accent transition-colors border-t border-border" data-testid="button-2fa">
-                        <span>Enable Two-Factor Authentication</span><ChevronRight className="w-4 h-4" />
-                      </button>
-                    </div>
-                  </div>
-
-                  <div className="bg-card border border-border rounded-2xl p-6">
-                    <h3 className="font-semibold text-foreground mb-4 flex items-center gap-2"><Bell className="w-4 h-4 text-accent" /> Notifications</h3>
-                    {[
-                      { label: "Email notifications", desc: "Receive updates by email" },
-                      { label: "Booking reminders", desc: "Reminded 24h before appointments" },
-                      { label: "Deadline alerts", desc: "Tax and compliance reminders" },
-                      { label: "Invoice notifications", desc: "New invoice alerts" },
-                    ].map((item) => (
-                      <div key={item.label} className="flex items-center justify-between py-2.5 border-b border-border last:border-0">
-                        <div>
-                          <div className="text-sm font-medium text-foreground">{item.label}</div>
-                          <div className="text-xs text-muted-foreground">{item.desc}</div>
-                        </div>
-                        <button className="w-11 h-6 rounded-full gold-gradient relative transition-all" data-testid={`toggle-${item.label.toLowerCase().replace(" ", "-")}`}>
-                          <div className="absolute right-1 top-1 w-4 h-4 rounded-full bg-[#0A1628]" />
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="bg-card border border-red-200 dark:border-red-900/30 rounded-2xl p-6">
-                    <h3 className="font-semibold text-red-600 dark:text-red-400 mb-3">Danger Zone</h3>
-                    <button onClick={handleLogout} className="flex items-center gap-2 text-sm text-red-500 hover:text-red-400 transition-colors" data-testid="button-signout">
-                      <LogOut className="w-4 h-4" /> Sign Out of Account
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
+            <SettingsSection />
           )}
         </main>
       </div>
     </div>
+  );
+}
+
+function SettingsSection() {
+  const { user, updateUserProfile, logout } = useAuth();
+  const [profileName, setProfileName] = useState(user?.name ?? "");
+  const [profilePhone, setProfilePhone] = useState(user?.phone ?? "");
+  const [profileCompany, setProfileCompany] = useState(user?.company ?? "");
+  const [isSaving, setIsSaving] = useState(false);
+
+  useEffect(() => {
+    setProfileName(user?.name ?? "");
+    setProfilePhone(user?.phone ?? "");
+    setProfileCompany(user?.company ?? "");
+  }, [user]);
+
+  async function handleSaveProfile(e: React.FormEvent) {
+    e.preventDefault();
+    setIsSaving(true);
+    try {
+      await updateUserProfile({
+        name: profileName.trim() || undefined,
+        phone: profilePhone.trim() || undefined,
+        company: profileCompany.trim() || undefined,
+      });
+      toast.success("Profile updated successfully.");
+    } catch {
+      toast.error("Failed to save profile. Please try again.");
+    } finally {
+      setIsSaving(false);
+    }
+  }
+
+  async function handleLogout() {
+    try { await logout(); } catch { /* ignore */ }
+  }
+
+  return (
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}>
+      <div className="mb-6">
+        <h2 className="text-xl font-bold text-foreground">Account Settings</h2>
+        <p className="text-sm text-muted-foreground mt-1">Manage your profile and preferences</p>
+      </div>
+      <div className="grid lg:grid-cols-2 gap-6">
+        <div className="bg-card border border-border rounded-2xl p-6">
+          <h3 className="font-semibold text-foreground mb-5 flex items-center gap-2"><Users className="w-4 h-4 text-accent" /> Profile Information</h3>
+          <form onSubmit={handleSaveProfile} className="space-y-4">
+            <div>
+              <label className="block text-xs text-muted-foreground mb-1.5">Full Name</label>
+              <input
+                type="text"
+                value={profileName}
+                onChange={(e) => setProfileName(e.target.value)}
+                placeholder="Your full name"
+                className="w-full bg-muted border border-border rounded-xl px-4 py-2.5 text-foreground text-sm focus:outline-none focus:border-accent transition-colors"
+              />
+            </div>
+            <div>
+              <label className="block text-xs text-muted-foreground mb-1.5">Email Address</label>
+              <input
+                type="email"
+                value={user?.email ?? ""}
+                readOnly
+                className="w-full bg-muted border border-border rounded-xl px-4 py-2.5 text-muted-foreground text-sm cursor-not-allowed opacity-60"
+              />
+            </div>
+            <div>
+              <label className="block text-xs text-muted-foreground mb-1.5 flex items-center gap-1.5"><Phone className="w-3 h-3" /> Phone Number</label>
+              <input
+                type="tel"
+                value={profilePhone}
+                onChange={(e) => setProfilePhone(e.target.value)}
+                placeholder="+20 10 1234 5678"
+                className="w-full bg-muted border border-border rounded-xl px-4 py-2.5 text-foreground text-sm focus:outline-none focus:border-accent transition-colors"
+              />
+            </div>
+            <div>
+              <label className="block text-xs text-muted-foreground mb-1.5">Company Name</label>
+              <input
+                type="text"
+                value={profileCompany}
+                onChange={(e) => setProfileCompany(e.target.value)}
+                placeholder="Your company"
+                className="w-full bg-muted border border-border rounded-xl px-4 py-2.5 text-foreground text-sm focus:outline-none focus:border-accent transition-colors"
+              />
+            </div>
+            <button
+              type="submit"
+              disabled={isSaving}
+              className="w-full py-2.5 rounded-xl gold-gradient text-[#0A1628] font-semibold text-sm hover:opacity-90 transition-opacity flex items-center justify-center gap-2 disabled:opacity-60"
+              data-testid="button-save-profile"
+            >
+              {isSaving ? <><Loader2 className="w-4 h-4 animate-spin" /> Saving…</> : "Save Changes"}
+            </button>
+          </form>
+        </div>
+
+        <div className="space-y-4">
+          <div className="bg-card border border-border rounded-2xl p-6">
+            <h3 className="font-semibold text-foreground mb-4 flex items-center gap-2"><Shield className="w-4 h-4 text-accent" /> Security</h3>
+            <div className="space-y-3">
+              <button className="w-full flex items-center justify-between py-3 text-sm text-foreground hover:text-accent transition-colors" data-testid="button-change-password">
+                <span>Change Password</span><ChevronRight className="w-4 h-4" />
+              </button>
+              <button className="w-full flex items-center justify-between py-3 text-sm text-foreground hover:text-accent transition-colors border-t border-border" data-testid="button-2fa">
+                <span>Enable Two-Factor Authentication</span><ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+
+          <div className="bg-card border border-border rounded-2xl p-6">
+            <h3 className="font-semibold text-foreground mb-4 flex items-center gap-2"><Bell className="w-4 h-4 text-accent" /> Notifications</h3>
+            {[
+              { label: "Email notifications", desc: "Receive updates by email" },
+              { label: "Booking reminders", desc: "Reminded 24h before appointments" },
+              { label: "Deadline alerts", desc: "Tax and compliance reminders" },
+              { label: "Invoice notifications", desc: "New invoice alerts" },
+            ].map((item) => (
+              <div key={item.label} className="flex items-center justify-between py-2.5 border-b border-border last:border-0">
+                <div>
+                  <div className="text-sm font-medium text-foreground">{item.label}</div>
+                  <div className="text-xs text-muted-foreground">{item.desc}</div>
+                </div>
+                <button className="w-11 h-6 rounded-full gold-gradient relative transition-all" data-testid={`toggle-${item.label.toLowerCase().replace(" ", "-")}`}>
+                  <div className="absolute right-1 top-1 w-4 h-4 rounded-full bg-[#0A1628]" />
+                </button>
+              </div>
+            ))}
+          </div>
+
+          <div className="bg-card border border-red-200 dark:border-red-900/30 rounded-2xl p-6">
+            <h3 className="font-semibold text-red-600 dark:text-red-400 mb-3">Danger Zone</h3>
+            <button onClick={handleLogout} className="flex items-center gap-2 text-sm text-red-500 hover:text-red-400 transition-colors" data-testid="button-signout">
+              <LogOut className="w-4 h-4" /> Sign Out of Account
+            </button>
+          </div>
+        </div>
+      </div>
+    </motion.div>
   );
 }

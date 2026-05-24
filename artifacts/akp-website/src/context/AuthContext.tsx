@@ -17,7 +17,7 @@ interface AuthContextValue extends AuthState {
   logout: () => Promise<void>;
   register: (name: string, email: string, password: string, role?: UserRole, company?: string, phone?: string) => Promise<void>;
   resetPassword: (email: string) => Promise<void>;
-  updateUserProfile: (data: Partial<Pick<User, "name" | "company" | "avatar">>) => Promise<void>;
+  updateUserProfile: (data: Partial<Pick<User, "name" | "company" | "avatar" | "phone">>) => Promise<void>;
   sendVerificationEmail: () => Promise<void>;
   refreshUser: () => Promise<void>;
 }
@@ -93,7 +93,7 @@ function useMockAuth() {
     await new Promise((r) => setTimeout(r, 800));
   };
 
-  const updateUserProfileFn = async (data: Partial<Pick<User, "name" | "company" | "avatar">>) => {
+  const updateUserProfileFn = async (data: Partial<Pick<User, "name" | "company" | "avatar" | "phone">>) => {
     setState((prev) => {
       if (!prev.user) return prev;
       const updated = { ...prev.user, ...data };
@@ -191,7 +191,7 @@ function useFirebaseAuth() {
     }
   };
 
-  const updateUserProfileFn = async (data: Partial<Pick<User, "name" | "company" | "avatar">>) => {
+  const updateUserProfileFn = async (data: Partial<Pick<User, "name" | "company" | "avatar" | "phone">>) => {
     if (!auth?.currentUser) throw new Error("No authenticated user");
     const { name, avatar } = data;
     if (name || avatar) {
