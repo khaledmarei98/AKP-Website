@@ -6,7 +6,7 @@ import {
   LayoutDashboard, BookOpen, Calendar, FolderOpen, Receipt, Bell, HeadphonesIcon,
   Settings, ChevronRight, X, Upload, Download, TrendingUp, Users, Clock,
   BarChart3, CheckCircle, AlertCircle, FileText, Plus, ArrowUpRight,
-  LogOut, Shield, Play, Star, Library, Newspaper, ClipboardList, Mail, MessageSquare, Eye, Phone, Loader2
+  LogOut, Shield, Play, Star, Library, Newspaper, ClipboardList, Mail, MessageSquare, Eye, Phone, PhoneCall, Loader2
 } from "lucide-react";
 import { toast } from "sonner";
 import AdminLibrary from "@/components/dashboard/AdminLibrary";
@@ -183,7 +183,15 @@ function ContactMessagesAdmin() {
                       {sourceLabel[msg.source]}
                     </span>
                   </div>
-                  <div className="text-xs text-muted-foreground mt-0.5">{msg.email}{msg.phone ? ` · ${msg.phone}` : ""}{msg.service ? ` · ${msg.service}` : ""}</div>
+                  <div className="text-xs text-muted-foreground mt-0.5 flex items-center gap-2 flex-wrap">
+                    <span>{msg.email}</span>
+                    {msg.phone && (
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-accent/10 text-accent font-medium">
+                        <Phone className="w-2.5 h-2.5" />{msg.phone}
+                      </span>
+                    )}
+                    {msg.service && <span className="text-muted-foreground">{msg.service}</span>}
+                  </div>
                   <p className="text-sm text-foreground/70 mt-1 truncate">{msg.message}</p>
                 </div>
                 <ChevronRight className={`w-4 h-4 text-muted-foreground shrink-0 transition-transform ${expanded === msg.id ? "rotate-90" : ""}`} />
@@ -214,6 +222,22 @@ function ContactMessagesAdmin() {
                             </div>
                           ))}
                         </div>
+                      </div>
+                    )}
+
+                    {msg.phone && (
+                      <div className="flex items-center gap-2 bg-muted rounded-xl px-4 py-2.5">
+                        <PhoneCall className="w-3.5 h-3.5 text-accent shrink-0" />
+                        <div>
+                          <div className="text-[10px] font-medium text-muted-foreground uppercase tracking-wide">Phone</div>
+                          <div className="text-sm font-semibold text-foreground">{msg.phone}</div>
+                        </div>
+                        <a
+                          href={`tel:${msg.phone}`}
+                          className="ml-auto text-xs font-medium text-accent hover:underline"
+                        >
+                          Call
+                        </a>
                       </div>
                     )}
 
