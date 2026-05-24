@@ -1,0 +1,241 @@
+Add advanced future-ready ecosystem features to the AKP Consulting platform while keeping the existing premium dark/gold design language and scalable architecture.
+
+IMPORTANT:
+These features should be implemented as scalable frontend architecture and UI preparation.
+Do NOT build fake backend logic.
+Do NOT overcomplicate unnecessarily.
+
+==================================================
+AI ASSISTANT PREPARATION
+========================
+
+Prepare an AI assistant system UI and architecture for future integration.
+
+The AI assistant will later help users with:
+
+* accounting guidance
+* tax questions
+* HR guidance
+* business consulting
+* required documents
+* compliance reminders
+
+Create:
+
+* AI assistant chat interface
+* floating assistant button
+* assistant panel/modal
+* conversation UI
+* quick suggestion buttons
+* responsive mobile layout
+
+Keep the assistant professional and enterprise-style.
+
+==================================================
+CLIENT DOCUMENT VAULT
+=====================
+
+Create a secure document vault architecture and UI.
+
+Users should later be able to:
+
+* upload files
+* organize documents
+* preview documents
+* download files
+* track uploads
+
+Prepare categorized sections for:
+
+* tax documents
+* accounting files
+* HR files
+* legal documents
+* Excel sheets
+* contracts
+
+Add:
+
+* folders/categories UI
+* search UI
+* file cards/table layouts
+* upload placeholders
+* recent documents section
+
+==================================================
+RENEWALS & DEADLINES SYSTEM
+===========================
+
+Prepare reminders and deadlines tracking architecture.
+
+Support future reminders for:
+
+* tax filings
+* VAT
+* commercial registration renewals
+* licenses
+* HR deadlines
+* insurance deadlines
+
+Create:
+
+* deadlines dashboard widgets
+* alerts UI
+* notifications placeholders
+* calendar-style sections
+
+==================================================
+FINANCIAL TOOLS CENTER
+======================
+
+Create a tools/calculators section for SEO and lead generation.
+
+Prepare tools pages/placeholders for:
+
+* VAT calculator
+* salary calculator
+* tax calculator
+* profit margin calculator
+* loan calculator
+* payroll calculator
+
+Keep architecture scalable for future logic integration.
+
+==================================================
+INTERNAL TEAM DASHBOARD PREPARATION
+===================================
+
+Prepare internal staff/admin management structure.
+
+Future support:
+
+* assigned clients
+* tasks
+* follow-ups
+* ticket handling
+* uploaded files
+* internal notes
+
+Create scalable admin/staff dashboard placeholders.
+
+==================================================
+CLIENT ACTIVITY TIMELINE
+========================
+
+Prepare activity tracking UI.
+
+Show future activities such as:
+
+* uploaded documents
+* completed bookings
+* submitted requests
+* invoice updates
+* course progress
+* support activity
+
+Create modern timeline/activity feed layouts.
+
+==================================================
+SUBSCRIPTION & BILLING PREPARATION
+==================================
+
+Prepare billing/subscription architecture for future implementation.
+
+Support future:
+
+* monthly subscriptions
+* yearly subscriptions
+* per-course purchases
+* company plans
+* accounting office plans
+
+Create placeholders for:
+
+* invoices
+* payment history
+* subscription status
+* upgrade/downgrade plans
+
+==================================================
+GLOBAL SEARCH SYSTEM
+====================
+
+Prepare scalable search architecture.
+
+Future searchable content:
+
+* articles
+* courses
+* documents
+* services
+* legal updates
+* templates
+
+Create:
+
+* global search UI
+* search modal
+* results layout
+* categorized search results
+
+==================================================
+SMART ADMIN PANEL PREPARATION
+=============================
+
+Prepare a professional analytics/admin system.
+
+Future widgets:
+
+* users count
+* bookings count
+* active subscriptions
+* uploaded files
+* course enrollments
+* revenue analytics
+* support tickets
+
+Create modern enterprise dashboard layouts.
+
+==================================================
+CMS-LIKE CONTENT MANAGEMENT PREPARATION
+=======================================
+
+Prepare architecture for future content management without coding.
+
+Support future management of:
+
+* blog articles
+* services
+* courses
+* resources
+* FAQs
+* homepage sections
+
+Separate content structure from UI components cleanly.
+
+==================================================
+MARKETPLACE / PARTNER EXPANSION PREPARATION
+===========================================
+
+Prepare architecture for future expansion where:
+
+* instructors can upload courses
+* accounting partners can offer services
+* external offices can join the ecosystem
+
+Do not implement backend logic yet.
+Only prepare scalable frontend architecture.
+
+==================================================
+IMPORTANT RULES
+===============
+
+* Preserve the current branding and visual identity
+* Keep architecture clean and scalable
+* Avoid fake enterprise complexity
+* Avoid duplicated code
+* Keep components reusable
+* Ensure responsive behavior
+* Keep the project future-ready for Firebase/backend integration
+* Verify all routes and imports work correctly
+* Ensure the application builds successfully without errors

@@ -1,0 +1,133 @@
+Implement a real Booking & Service Requests system using Firebase Firestore while preserving the AKP platform architecture and design system.
+
+This should become the operational client acquisition and service management system for AKP Consulting.
+
+==================================================
+PUBLIC BOOKING EXPERIENCE
+=========================
+
+Create a professional booking/request flow for:
+
+* tax consultations
+* accounting services
+* HR consultations
+* ERP consulting
+* business consulting
+* audit/review services
+
+Users should be able to:
+
+* select service category
+* choose consultation type
+* submit company details
+* write request details
+* optionally upload supporting documents
+* select preferred contact method
+* submit requests professionally
+
+==================================================
+BOOKINGS DATABASE
+=================
+
+Store bookings in Firestore with:
+
+* userId
+* customer name
+* email
+* company
+* service category
+* request type
+* request details
+* status
+* createdAt
+* updatedAt
+* assignedTo
+* attachments
+* notes placeholders
+
+==================================================
+BOOKING STATUS SYSTEM
+=====================
+
+Support statuses:
+
+* new
+* pending
+* in_review
+* approved
+* completed
+* rejected
+
+==================================================
+ADMIN BOOKING MANAGEMENT
+========================
+
+Create protected admin dashboard section for:
+
+* viewing all bookings
+* filtering by status/service
+* assigning bookings
+* updating statuses
+* viewing customer details
+* viewing uploaded files
+* internal admin notes placeholders
+
+==================================================
+CLIENT DASHBOARD
+================
+
+Authenticated users should see:
+
+* their submitted requests
+* booking statuses
+* timestamps
+* request history
+
+==================================================
+FILE UPLOADS
+============
+
+Allow optional document uploads using Firebase Storage.
+
+Support:
+
+* PDFs
+* Excel files
+* images
+* business documents
+
+==================================================
+NOTIFICATIONS PREPARATION
+=========================
+
+Prepare architecture placeholders for future:
+
+* email notifications
+* status updates
+* admin alerts
+* customer alerts
+
+==================================================
+UI/UX
+=====
+
+Preserve the AKP premium dark/gold consulting identity.
+
+The booking experience should feel:
+
+* enterprise-level
+* trustworthy
+* professional
+* simple to use
+
+==================================================
+IMPORTANT
+=========
+
+* Use scalable TypeScript structures
+* Use real Firestore integration
+* Avoid fake/mock systems
+* Keep implementation maintainable
+* Ensure Firestore security compatibility
+* Verify routes/imports/build pass correctly
+* Ensure dashboard permissions work properly

@@ -1,0 +1,117 @@
+Integrate Firebase into the AKP Consulting platform professionally and prepare the project for real production data.
+
+IMPORTANT:
+Do NOT break the existing UI or routing.
+Do NOT redesign the application.
+Focus on clean scalable integration.
+
+==================================================
+FIREBASE SETUP
+==============
+
+Integrate Firebase with:
+
+* Firebase Authentication
+* Firestore Database
+* Firebase Storage
+
+Create clean configuration structure.
+
+==================================================
+AUTHENTICATION
+==============
+
+Implement real authentication using Firebase Auth.
+
+Support:
+
+* Register
+* Login
+* Logout
+* Session persistence
+* Protected routes
+
+Users should NOT need login to browse the public website.
+
+Only authenticated users can later access dashboard features.
+
+==================================================
+ROLES PREPARATION
+=================
+
+Prepare scalable user role architecture for:
+
+* admin
+* client
+* student
+* instructor
+* accounting_partner
+
+Use clean TypeScript structures.
+
+==================================================
+DATABASE STRUCTURE
+==================
+
+Prepare Firestore collections structure for:
+
+* users
+* courses
+* articles
+* resources
+* bookings
+* supportTickets
+* subscriptions
+* notifications
+
+Do not create fake data complexity.
+
+==================================================
+FILE STORAGE
+============
+
+Prepare Firebase Storage integration for:
+
+* PDFs
+* Excel files
+* course resources
+* client documents
+* images
+
+==================================================
+DASHBOARD ACCESS
+================
+
+Implement route protection structure.
+
+Public users:
+
+* can browse public pages
+
+Authenticated users:
+
+* can access dashboard pages
+
+==================================================
+TECHNICAL REQUIREMENTS
+======================
+
+Use:
+
+* React
+* TypeScript
+* Firebase SDK
+* React Context or scalable auth state management
+
+Keep architecture clean and maintainable.
+
+==================================================
+IMPORTANT RULES
+===============
+
+* Do NOT break current design
+* Do NOT generate fake backend systems
+* Do NOT overcomplicate
+* Keep implementation realistic
+* Verify all routes/imports work correctly
+* Ensure the app builds successfully

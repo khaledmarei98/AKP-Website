@@ -1,0 +1,254 @@
+Transform this website into a scalable modern financial services platform for AKP Consulting without breaking the existing design identity.
+
+The company specializes in:
+
+* accounting
+* taxation
+* financial consulting
+* HR services
+* ERP implementation
+* business consulting
+
+The platform must support both:
+
+1. public visitors browsing the website
+2. authenticated users with accounts and dashboards
+
+IMPORTANT:
+Keep the current premium dark/gold design style and branding.
+Do not redesign the entire website.
+Improve architecture, scalability, UX, and future readiness.
+
+==================================================
+MAIN GOAL
+=========
+
+Convert the current website into a complete ecosystem that can later support:
+
+* client accounts
+* dashboards
+* online courses
+* blog/articles
+* downloadable resources
+* bookings
+* subscriptions
+* accounting office partnerships
+* document management
+* notifications
+* future mobile app support
+
+==================================================
+PUBLIC WEBSITE FEATURES
+=======================
+
+Create and improve these public pages:
+
+* Home
+* About
+* Services
+* Courses
+* Blog
+* Resources Library
+* Contact
+* Book Consultation
+
+Improve navigation and routing using React Router.
+
+Add professional section structures for:
+
+* featured services
+* latest articles
+* latest tax/legal updates
+* downloadable templates/resources
+* featured courses
+* testimonials
+* CTA sections
+* FAQ sections
+
+==================================================
+AUTHENTICATION SYSTEM PREPARATION
+=================================
+
+Prepare the application for future authentication.
+
+Add:
+
+* Login page
+* Register page
+* Forgot password page
+
+Do NOT fully implement backend auth yet.
+Only prepare clean scalable frontend architecture.
+
+Add account-aware navigation behavior:
+
+* guest users see public navigation
+* authenticated users later can access dashboard areas
+
+Add placeholders and protected route structure.
+
+==================================================
+USER TYPES / ROLES
+==================
+
+Prepare architecture for future roles:
+
+* Super Admin
+* Admin Staff
+* Instructors
+* Clients
+* Accounting Office Partners
+* Students
+
+Do not fully implement permissions yet.
+Only structure the app correctly.
+
+==================================================
+CLIENT DASHBOARD PREPARATION
+============================
+
+Create scalable dashboard UI structure for future use.
+
+Include dashboard pages/placeholders for:
+
+* Overview
+* My Courses
+* My Bookings
+* Documents
+* Invoices
+* Notifications
+* Support Tickets
+* Account Settings
+
+==================================================
+COURSES SYSTEM PREPARATION
+==========================
+
+Prepare complete frontend architecture for courses platform.
+
+Include:
+
+* Courses listing page
+* Course details page
+* Video lesson layout
+* Downloadable resources area
+* Quiz/exam placeholders
+* Instructor information
+* Progress tracking placeholders
+
+Support future:
+
+* free courses
+* paid courses
+* subscriptions
+
+==================================================
+BLOG & KNOWLEDGE CENTER
+=======================
+
+Create professional blog/news architecture.
+
+Support:
+
+* categories
+* featured articles
+* article pages
+* SEO-friendly structure
+* legal/tax updates
+* HR updates
+* search functionality placeholders
+
+==================================================
+RESOURCE LIBRARY
+================
+
+Create a resources center for:
+
+* PDFs
+* Excel templates
+* tax forms
+* accounting templates
+* HR documents
+* downloadable guides
+
+Add filtering UI and categorized layout.
+
+==================================================
+BOOKING SYSTEM PREPARATION
+==========================
+
+Prepare booking system UI for:
+
+* consultations
+* accounting services
+* tax filing services
+* HR consultations
+
+Include:
+
+* booking forms
+* appointment selection placeholders
+* service selection
+* confirmation UI
+
+==================================================
+PROJECT STRUCTURE
+=================
+
+Refactor and organize the project professionally.
+
+Create scalable folders such as:
+
+* pages
+* components
+* layouts
+* dashboard
+* auth
+* data
+* services
+* hooks
+* context
+* routes
+* types
+
+Clean duplicated code carefully.
+Do not break imports.
+
+==================================================
+TECHNICAL REQUIREMENTS
+======================
+
+Use:
+
+* React
+* TypeScript
+* React Router
+* scalable reusable components
+* responsive modern layout
+* clean architecture
+
+Prepare app for future:
+
+* Firebase integration
+* API integration
+* multilingual support (Arabic/English)
+* mobile app conversion
+
+==================================================
+IMPORTANT RULES
+===============
+
+* Do NOT destroy the current UI identity
+* Do NOT remove existing content
+* Do NOT simplify the website
+* Do NOT create fake backend logic
+* Do NOT overcomplicate visually
+* Focus on scalability and future readiness
+* Keep everything professional, modern, and maintainable
+
+After completing:
+
+* verify all routes work
+* verify no broken imports
+* verify the app builds successfully
+* keep the website production-ready

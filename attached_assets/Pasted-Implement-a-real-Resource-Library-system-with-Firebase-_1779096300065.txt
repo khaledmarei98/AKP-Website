@@ -1,0 +1,93 @@
+Implement a real Resource Library system with Firebase Firestore and Firebase Storage integration.
+
+This should be the first real CMS-style feature of the AKP platform.
+
+==================================================
+PUBLIC RESOURCE LIBRARY
+=======================
+
+Create a professional resources page where users can browse:
+
+* PDF files
+* Excel templates
+* HR forms
+* Tax documents
+* Financial templates
+* Legal/regulatory documents
+
+Each resource should support:
+
+* title
+* description
+* category
+* thumbnail/image
+* file type
+* upload date
+* downloadable file URL
+
+==================================================
+ADMIN RESOURCE MANAGEMENT
+=========================
+
+Create a protected admin-only dashboard section for managing resources.
+
+Admin capabilities:
+
+* upload files to Firebase Storage
+* create resource entries
+* edit resources
+* delete resources
+* assign categories
+* upload thumbnails/images
+
+==================================================
+FIREBASE INTEGRATION
+====================
+
+Use:
+
+* Firestore for metadata
+* Firebase Storage for files/images
+
+Implement proper async loading and error handling.
+
+==================================================
+ACCESS CONTROL
+==============
+
+Public users:
+
+* can browse resources
+
+Authenticated users:
+
+* can download premium resources later
+
+For now:
+
+* keep downloads public
+* but architect the system for future premium restrictions
+
+==================================================
+UI/UX
+=====
+
+Keep the existing AKP design language:
+
+* dark luxury consulting style
+* gold accents
+* responsive layout
+
+Do not redesign the entire website.
+
+==================================================
+IMPORTANT
+=========
+
+* Use scalable TypeScript structures
+* Keep implementation realistic
+* Avoid fake/mock systems
+* Verify all uploads work correctly
+* Verify Firestore writes correctly
+* Ensure routes are protected properly
+* Ensure TypeScript passes cleanly

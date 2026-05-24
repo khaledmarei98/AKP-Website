@@ -1,0 +1,140 @@
+Implement a real Blog / Articles CMS system using Firebase Firestore and Firebase Storage while preserving the AKP platform architecture and design system.
+
+This should become the official AKP Knowledge Center for:
+
+* tax updates
+* accounting insights
+* HR articles
+* financial consulting content
+* legal/regulatory news
+
+==================================================
+PUBLIC BLOG SYSTEM
+==================
+
+Create a professional public articles experience.
+
+Features:
+
+* Articles listing page
+* Featured articles section
+* Categories
+* Search/filter UI
+* Individual article pages
+* Related articles
+* Responsive reading layout
+
+Each article should support:
+
+* title
+* slug
+* excerpt
+* full rich content
+* category
+* featured image
+* tags
+* author
+* publish date
+* reading time
+* featured flag
+* SEO metadata
+
+==================================================
+ADMIN ARTICLES CMS
+==================
+
+Create a protected admin-only dashboard section for managing articles.
+
+Admin capabilities:
+
+* create article
+* edit article
+* delete article
+* upload featured image
+* manage categories/tags
+* draft/publish states
+* featured article toggle
+
+==================================================
+EDITOR EXPERIENCE
+=================
+
+Implement a clean article editor experience.
+
+Support:
+
+* headings
+* paragraphs
+* bullet lists
+* links
+* quotes
+* images
+* formatting toolbar
+
+Keep implementation realistic and maintainable.
+
+==================================================
+FIREBASE INTEGRATION
+====================
+
+Use:
+
+* Firestore for article metadata/content
+* Firebase Storage for featured images and embedded images
+
+Implement proper loading states and error handling.
+
+==================================================
+SEO & URL STRUCTURE
+===================
+
+Use SEO-friendly URLs:
+
+* /blog/article-slug
+
+Prepare:
+
+* meta titles
+* descriptions
+* Open Graph structure
+* structured article data
+
+==================================================
+ACCESS CONTROL
+==============
+
+Public users:
+
+* can read published articles
+
+Only admins:
+
+* can manage articles
+
+Draft articles should not be publicly visible.
+
+==================================================
+UI/UX
+=====
+
+Preserve the AKP premium dark/gold consulting identity.
+
+The reading experience should feel:
+
+* professional
+* modern
+* high-trust
+* clean
+* optimized for long-form reading
+
+==================================================
+IMPORTANT
+=========
+
+* Use scalable TypeScript structures
+* Avoid fake/mock systems
+* Avoid overengineering
+* Keep architecture maintainable
+* Ensure Firestore security compatibility
+* Verify routes/imports/build pass correctly
+* Ensure the CMS is production-ready

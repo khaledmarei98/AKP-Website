@@ -1,0 +1,374 @@
+Upgrade and refactor the AKP Consulting platform into a scalable production-ready financial services ecosystem while preserving the current premium dark/gold brand identity and existing UI style.
+
+IMPORTANT:
+This is NOT just a company website anymore.
+This must become a scalable ecosystem for:
+
+* accounting services
+* taxation services
+* HR services
+* ERP consulting
+* online learning
+* client management
+* accounting office partnerships
+* downloadable resources
+* legal and tax updates
+
+The architecture must support future growth without becoming messy.
+
+==================================================
+CORE PLATFORM OBJECTIVE
+=======================
+
+Build a modern scalable platform that supports:
+
+1. Public visitors browsing content
+2. Registered clients
+3. Students
+4. Accounting office partners
+5. Admins and staff
+
+Keep the current visual identity and existing sections.
+Do not redesign from scratch.
+
+==================================================
+PUBLIC WEBSITE
+==============
+
+Improve and organize the public-facing platform with these pages:
+
+* Home
+* About
+* Services
+* Courses
+* Blog
+* Resources Library
+* Contact
+* Book Consultation
+* Pricing
+* FAQ
+
+Add premium professional sections:
+
+* featured services
+* latest tax updates
+* latest accounting news
+* HR insights
+* featured courses
+* downloadable templates
+* testimonials
+* statistics
+* CTA sections
+* newsletter section
+
+==================================================
+ROUTING & STRUCTURE
+===================
+
+Use React Router properly and organize scalable routing.
+
+Prepare:
+
+* public routes
+* auth routes
+* dashboard routes
+* protected routes structure
+
+Verify all routes work correctly.
+
+==================================================
+MULTI-LANGUAGE PREPARATION
+==========================
+
+Prepare full bilingual architecture:
+
+* English
+* Arabic
+
+Requirements:
+
+* RTL/LTR support
+* translation files structure
+* language switcher
+* clean scalable i18n architecture
+
+Do not fully translate all content yet.
+Only prepare the system correctly.
+
+==================================================
+AUTHENTICATION PREPARATION
+==========================
+
+Prepare frontend architecture for authentication.
+
+Create:
+
+* Login page
+* Register page
+* Forgot password page
+* Email verification placeholder
+* Reset password placeholder
+
+Add account-aware navigation behavior:
+
+* guests see public content
+* authenticated users later access dashboards
+
+Do NOT implement fake backend authentication.
+
+==================================================
+USER ROLES PREPARATION
+======================
+
+Prepare scalable role architecture for:
+
+* Super Admin
+* Admin Staff
+* Instructor
+* Client
+* Student
+* Accounting Office Partner
+
+Do not fully implement permissions yet.
+Only structure correctly.
+
+==================================================
+CLIENT DASHBOARD PREPARATION
+============================
+
+Create scalable dashboard UI and routing placeholders.
+
+Dashboard sections:
+
+* Overview
+* My Courses
+* Bookings
+* Documents
+* Invoices
+* Notifications
+* Support Tickets
+* Account Settings
+
+==================================================
+ACCOUNTING OFFICE PARTNER PORTAL
+================================
+
+Prepare special B2B portal structure for accounting firms.
+
+Features preparation:
+
+* upload company files
+* manage multiple client companies
+* tax filing tracking
+* bulk services
+* invoices
+* service requests
+
+This section must feel enterprise-level and scalable.
+
+==================================================
+COURSES SYSTEM PREPARATION
+==========================
+
+Build scalable frontend architecture for courses platform.
+
+Include:
+
+* Courses listing
+* Course details
+* Video lesson layout
+* Download center
+* Instructor profile
+* Progress tracking placeholders
+* Quiz/exam placeholders
+* Certification placeholders
+
+Support future:
+
+* free courses
+* one-time paid courses
+* subscriptions
+
+==================================================
+BLOG & KNOWLEDGE CENTER
+=======================
+
+Create professional article/news architecture.
+
+Support:
+
+* article categories
+* tax/legal updates
+* HR updates
+* featured articles
+* article detail pages
+* SEO-friendly structure
+* search placeholders
+* related articles
+
+==================================================
+RESOURCE LIBRARY
+================
+
+Create professional downloadable resources center.
+
+Support:
+
+* PDF files
+* Excel templates
+* accounting sheets
+* HR templates
+* tax forms
+* guides and manuals
+
+Add:
+
+* categories
+* filtering
+* search UI
+* featured downloads
+
+==================================================
+BOOKING SYSTEM PREPARATION
+==========================
+
+Prepare scalable booking system UI.
+
+Support:
+
+* consultations
+* accounting services
+* tax filing appointments
+* HR consultations
+
+Include:
+
+* service selection
+* booking forms
+* date/time placeholders
+* confirmation UI
+
+==================================================
+SUPPORT & TICKETS
+=================
+
+Prepare support center structure.
+
+Include:
+
+* support tickets
+* file uploads placeholders
+* ticket status UI
+* conversation layout placeholders
+
+==================================================
+NOTIFICATION SYSTEM PREPARATION
+===============================
+
+Prepare notification architecture and UI placeholders for:
+
+* bookings
+* courses
+* announcements
+* legal updates
+* invoices
+* subscription alerts
+
+==================================================
+SEO & PERFORMANCE
+=================
+
+Prepare strong SEO architecture:
+
+* dynamic page titles
+* meta descriptions
+* Open Graph structure
+* sitemap readiness
+* structured data preparation
+* SEO-friendly article URLs
+
+Optimize:
+
+* performance
+* responsiveness
+* accessibility
+
+==================================================
+MOBILE & APP READINESS
+======================
+
+Prepare platform for future:
+
+* PWA support
+* mobile app conversion
+* responsive dashboards
+* responsive tables/cards
+
+Use mobile-first scalable components.
+
+==================================================
+PROJECT ARCHITECTURE
+====================
+
+Refactor and organize the project professionally.
+
+Create scalable structure:
+
+* pages
+* components
+* layouts
+* dashboard
+* auth
+* services
+* data
+* hooks
+* routes
+* types
+* contexts
+* utils
+
+Separate:
+
+* UI
+* content
+* logic
+* data structures
+
+Avoid duplicated code.
+
+==================================================
+TECHNICAL REQUIREMENTS
+======================
+
+Use:
+
+* React
+* TypeScript
+* React Router
+* reusable scalable components
+* clean architecture
+* maintainable codebase
+
+Prepare future compatibility for:
+
+* Firebase
+* APIs
+* Stripe
+* Paymob
+* notifications
+* backend services
+
+==================================================
+VERY IMPORTANT RULES
+====================
+
+* Keep the current premium branding and design identity
+* Do NOT destroy existing styling
+* Do NOT create fake backend systems
+* Do NOT overengineer unnecessarily
+* Do NOT generate useless complexity
+* Focus on scalable clean foundation
+* Keep the project realistic and maintainable
+* Verify all imports/routes/components work correctly
+* Ensure the project builds successfully without errors
+* Keep everything production-ready and future-ready

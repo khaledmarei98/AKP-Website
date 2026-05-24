@@ -1,0 +1,90 @@
+Implement secure Firebase Firestore and Firebase Storage security rules architecture for the AKP platform.
+
+IMPORTANT:
+Focus on real security and scalability.
+Do not use overly permissive production rules.
+
+==================================================
+FIRESTORE RULES
+===============
+
+Create proper Firestore security rules for:
+
+* users
+* resources
+* courses
+* bookings
+* supportTickets
+* subscriptions
+* notifications
+
+Requirements:
+
+* public read access only where appropriate
+* authenticated access where needed
+* admin-only write access for admin CMS areas
+* users can only edit their own profiles/data
+* scalable role-based architecture
+
+==================================================
+RESOURCE LIBRARY RULES
+======================
+
+Requirements:
+
+* public users can read public resources
+* only admin users can create/update/delete resources
+* download counters can update safely without exposing full write access
+
+==================================================
+STORAGE RULES
+=============
+
+Protect:
+
+* uploaded resource files
+* thumbnails
+* client documents
+* avatars
+* future course files
+
+Rules:
+
+* public read only for public resources
+* authenticated uploads where appropriate
+* admin-only management areas
+* users only access their own protected files
+
+==================================================
+ADMIN ROLE ARCHITECTURE
+=======================
+
+Implement scalable helper architecture for checking:
+
+* super_admin
+* admin_staff
+* instructor
+* client
+* student
+* accounting_partner
+
+==================================================
+DELIVERABLES
+============
+
+Provide:
+
+* firestore.rules
+* storage.rules
+* any required helper utilities
+* deployment instructions/comments
+
+==================================================
+IMPORTANT
+=========
+
+* Do NOT leave insecure production rules
+* Do NOT use allow read, write: if true
+* Keep rules realistic and maintainable
+* Ensure current Resource Library system still works correctly
+* Verify TypeScript/build passes cleanly

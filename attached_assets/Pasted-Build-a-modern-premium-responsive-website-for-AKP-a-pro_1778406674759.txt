@@ -1,0 +1,230 @@
+Build a modern, premium, responsive website for “AKP” — a professional accounting, finance, tax, and HR consulting firm based in Egypt.
+The website should feel corporate, trustworthy, modern, fast, and highly professional like a Big 4 consulting company but with a clean startup-style UI.
+
+Main brand colors:
+
+* Dark navy blue
+* White
+* Gold accents
+* Soft gray backgrounds
+
+Style direction:
+
+* Premium corporate aesthetic
+* Smooth animations and transitions
+* Responsive on desktop and mobile
+* Clean typography
+* Modern cards and sections
+* Elegant icons
+* Dashboard-like admin feel for content sections
+
+Website structure:
+
+1. HERO SECTION
+
+* Strong headline about accounting and HR solutions
+* Professional subheadline
+* CTA buttons:
+
+  * “Book Consultation”
+  * “Explore Resources”
+* Background with abstract finance/business visuals
+* Animated counters:
+
+  * Years Experience
+  * Clients
+  * Courses
+  * Articles
+
+2. ABOUT AKP
+
+* Professional introduction
+* Vision & mission
+* Why choose us
+* Cards for:
+
+  * Accounting Services
+  * Tax Services
+  * Financial Consulting
+  * HR Solutions
+  * Payroll Services
+  * Business Setup
+
+3. SERVICES SECTION
+   Create modern service cards with icons and hover effects.
+
+Services include:
+
+* Financial Accounting
+* Tax Consulting
+* ERP & Accounting Systems
+* Payroll Management
+* HR Management
+* Recruitment Support
+* Financial Analysis
+* Cost Accounting
+* Feasibility Studies
+* Internal Auditing
+* Business Consulting
+
+Each service should have:
+
+* Short description
+* Learn more button
+* Related category tag
+
+4. DIGITAL LIBRARY SECTION
+   This is very important.
+
+Create a searchable “Reference Library” page for:
+
+* Accounting references
+* Tax laws
+* HR policies
+* Financial templates
+* Excel sheets
+* PDF files
+* Downloadable forms
+* Books & guides
+
+Features:
+
+* Search bar
+* Category filters
+* Download buttons
+* File type badges
+* Grid layout
+* Recently added section
+* Featured references section
+
+Add example resources:
+
+* IFRS Guide
+* Egyptian Tax Law PDF
+* Payroll Excel Template
+* HR Employee Handbook
+* Cost Accounting Basics
+
+5. COURSES PLATFORM
+   Create a professional training section similar to online learning platforms.
+
+Features:
+
+* Course cards
+* Instructor info
+* Course duration
+* Progress bars
+* Categories
+* Featured courses
+* Student testimonials
+* Enrollment buttons
+
+Example courses:
+
+* Accounting Fundamentals
+* Excel for Accountants
+* HR Management Basics
+* Tax Accounting in Egypt
+* Financial Statement Analysis
+* ERP Systems Training
+
+Add:
+
+* Course details page
+* Video preview section
+* Curriculum sections
+* FAQ section
+
+6. ARTICLES & BLOG SYSTEM
+   Create a modern blog page for:
+
+* Accounting articles
+* HR tips
+* Tax updates
+* Financial analysis
+* Business advice
+
+Features:
+
+* Featured article hero
+* Article cards
+* Search functionality
+* Categories
+* Tags
+* Related articles
+* Author profile
+* Reading time
+* Share buttons
+
+Example article topics:
+
+* “How to Build a Strong Accounting System”
+* “Common Tax Mistakes in Egypt”
+* “Best HR Practices for Companies”
+* “Financial Planning for Startups”
+
+7. CLIENT PORTAL / DASHBOARD
+   Add a secure-looking client portal UI:
+
+* Upload documents
+* View reports
+* Download invoices
+* Follow requests
+* Notifications panel
+* Financial dashboard widgets
+
+8. CONTACT SECTION
+   Include:
+
+* Consultation form
+* WhatsApp button
+* Google Maps embed
+* Contact information
+* Social media icons
+* Business hours
+
+9. FOOTER
+   Professional footer with:
+
+* Quick links
+* Services
+* Courses
+* Articles
+* Library links
+* Newsletter subscription
+* Copyright
+
+TECHNICAL REQUIREMENTS:
+
+* Use React + Tailwind CSS
+* Modern component architecture
+* Smooth animations
+* Fast loading
+* SEO optimized
+* Dark/light mode toggle
+* CMS-ready structure
+* Firebase or Supabase ready
+* Easy admin panel integration later
+
+EXTRA FEATURES:
+
+* Multi-language ready (Arabic & English)
+* User authentication structure
+* Admin dashboard UI
+* Search across courses, articles, and library
+* AI assistant/chat widget placeholder
+* Testimonials carousel
+* FAQ accordion
+* Statistics section
+* Professional loading animations
+
+Design inspiration:
+Mix between:
+
+* Deloitte
+* PwC
+* modern SaaS websites
+* online academy platforms
+* corporate consulting websites
+
+The final result should look like a real premium accounting & HR ecosystem, not just a simple company profile website.

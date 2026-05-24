@@ -1,0 +1,51 @@
+modules = ["nodejs-24"]
+
+[deployment]
+router = "application"
+deploymentTarget = "autoscale"
+
+[deployment.postBuild]
+args = ["pnpm", "store", "prune"]
+env = { "CI" = "true" }
+
+[workflows]
+runButton = "Project"
+
+[agent]
+stack = "PNPM_WORKSPACE"
+expertMode = true
+
+[postMerge]
+path = "scripts/post-merge.sh"
+timeoutMs = 20000
+
+[[ports]]
+localPort = 8080
+externalPort = 8080
+
+[[ports]]
+localPort = 8081
+externalPort = 8081
+
+[[ports]]
+localPort = 8082
+externalPort = 3001
+
+[[ports]]
+localPort = 8083
+externalPort = 3000
+
+[[ports]]
+localPort = 24335
+externalPort = 80
+
+[userenv]
+
+[userenv.shared]
+VITE_FIREBASE_API_KEY = "AIzaSyDgSFtgwcTDwvOzntael16Ys_mtp-pEyMw"
+VITE_FIREBASE_AUTH_DOMAIN = "akpconsulting-dafe9.firebaseapp.com"
+VITE_FIREBASE_PROJECT_ID = "akpconsulting-dafe9"
+VITE_FIREBASE_STORAGE_BUCKET = "akpconsulting-dafe9.firebasestorage.app"
+VITE_FIREBASE_MESSAGING_SENDER_ID = "327216395688"
+VITE_FIREBASE_APP_ID = "1:327216395688:web:46e91b362b7c81106cd99d"
+VITE_FIREBASE_MEASUREMENT_ID = "G-BNDG2XG2HX"

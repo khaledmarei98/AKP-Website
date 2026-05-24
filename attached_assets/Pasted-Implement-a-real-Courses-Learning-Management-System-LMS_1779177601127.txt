@@ -1,0 +1,171 @@
+Implement a real Courses & Learning Management System (LMS) using Firebase Firestore and Firebase Storage while preserving the AKP platform architecture and premium design system.
+
+This should become the official AKP educational platform for:
+
+* accounting education
+* tax training
+* HR training
+* ERP tutorials
+* business consulting education
+* practical financial skills
+
+==================================================
+PUBLIC COURSES EXPERIENCE
+=========================
+
+Create a professional courses platform where users can:
+
+* browse courses
+* filter/search courses
+* view course details
+* view instructor info
+* preview lessons
+* see curriculum structure
+* see pricing/free status
+* enroll in courses
+
+Each course should support:
+
+* title
+* slug
+* description
+* short summary
+* category
+* instructor
+* thumbnail
+* featured image
+* tags
+* level (beginner/intermediate/advanced)
+* duration
+* lesson count
+* pricing/free status
+* featured flag
+* publish status
+
+==================================================
+COURSE STRUCTURE
+================
+
+Support:
+
+* sections/modules
+* lessons
+* video lessons
+* PDF resources
+* downloadable attachments
+* lesson descriptions
+
+Lesson types:
+
+* video
+* PDF/document
+* text lesson
+
+==================================================
+ENROLLMENT SYSTEM
+=================
+
+Implement real enrollment architecture.
+
+Users should:
+
+* enroll in free courses immediately
+* later support premium enrollment/payment architecture
+
+Track:
+
+* enrolled courses
+* progress percentage
+* completed lessons
+* last accessed lesson
+* enrollment date
+
+==================================================
+LEARNING EXPERIENCE
+===================
+
+Create a professional student learning interface.
+
+Features:
+
+* sidebar curriculum navigation
+* lesson progress tracking
+* lesson completion
+* next/previous lesson navigation
+* video player area
+* resource download section
+
+==================================================
+ADMIN COURSE CMS
+================
+
+Create protected admin/instructor dashboard tools for:
+
+* create/edit/delete courses
+* manage curriculum
+* upload videos
+* upload PDFs/resources
+* manage lessons/modules
+* manage publish state
+* featured courses
+* enrollment visibility
+
+==================================================
+INSTRUCTOR ROLE SUPPORT
+=======================
+
+Support instructor role permissions:
+
+* instructors manage only their own courses
+* admins manage all courses
+
+==================================================
+FIREBASE INTEGRATION
+====================
+
+Use:
+
+* Firestore for metadata/progress/enrollments
+* Firebase Storage for videos/resources/images
+
+Implement proper loading states and error handling.
+
+==================================================
+ACCESS CONTROL
+==============
+
+Public users:
+
+* browse published courses
+
+Authenticated users:
+
+* enroll and track progress
+
+Only admins/instructors:
+
+* manage courses
+
+==================================================
+UI/UX
+=====
+
+Preserve the AKP premium dark/gold consulting identity.
+
+The LMS should feel:
+
+* modern
+* premium
+* enterprise-grade
+* educational but professional
+
+==================================================
+IMPORTANT
+=========
+
+* Use scalable TypeScript architecture
+* Avoid fake/mock systems
+* Avoid overengineering
+* Ensure Firestore security compatibility
+* Verify uploads/routes/build pass correctly
+* Keep the system production-ready
