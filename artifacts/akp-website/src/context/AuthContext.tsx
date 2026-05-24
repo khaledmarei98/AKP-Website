@@ -6,7 +6,6 @@ import {
   onAuthStateChanged,
   updateProfile,
   sendPasswordResetEmail,
-  sendEmailVerification,
   type User as FirebaseUser,
 } from "firebase/auth";
 import { auth, isConfigured } from "@/lib/firebase";
@@ -16,7 +15,7 @@ import type { User, AuthState, UserRole } from "@/types";
 interface AuthContextValue extends AuthState {
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
-  register: (name: string, email: string, password: string, role?: UserRole, company?: string) => Promise<void>;
+  register: (name: string, email: string, password: string, role?: UserRole, company?: string, phone?: string) => Promise<void>;
   resetPassword: (email: string) => Promise<void>;
   updateUserProfile: (data: Partial<Pick<User, "name" | "company" | "avatar">>) => Promise<void>;
   sendVerificationEmail: () => Promise<void>;
@@ -30,10 +29,11 @@ function mapFirestoreUser(fbUser: FirebaseUser, profile: FirestoreUser | null): 
     id: fbUser.uid,
     name: profile?.name ?? fbUser.displayName ?? "User",
     email: fbUser.email ?? "",
+    phone: profile?.phone,
     role: profile?.role ?? "client",
     company: profile?.company,
     avatar: profile?.avatar ?? fbUser.photoURL ?? undefined,
-    isVerified: fbUser.emailVerified,
+    isVerified: true,
     createdAt: fbUser.metadata.creationTime ?? new Date().toISOString(),
   };
 }
@@ -82,9 +82,9 @@ function useMockAuth() {
     setState({ user: null, isAuthenticated: false, isLoading: false });
   };
 
-  const register = async (name: string, email: string, _password: string, role: UserRole = "client") => {
+  const register = async (name: string, email: string, _password: string, role: UserRole = "client", company?: string, phone?: string) => {
     await new Promise((r) => setTimeout(r, 1000));
-    const user: User = { id: `demo_${Date.now()}`, name, email, role, isVerified: true, createdAt: new Date().toISOString() };
+    const user: User = { id: `demo_${Date.now()}`, name, email, phone, role, company, isVerified: true, createdAt: new Date().toISOString() };
     localStorage.setItem("akp_demo_user", JSON.stringify(user));
     setState({ user, isAuthenticated: true, isLoading: false });
   };
@@ -153,12 +153,18 @@ function useFirebaseAuth() {
     await signOut(auth);
   };
 
-  const register = async (name: string, email: string, password: string, role: UserRole = "client", company?: string) => {
+  const register = async (name: string, email: string, password: string, role: UserRole = "client", company?: string, phone?: string) => {
     if (!auth) throw new Error("Firebase Auth not initialized");
     const { user: fbUser } = await createUserWithEmailAndPassword(auth, email, password);
     await updateProfile(fbUser, { displayName: name });
-    await createUserProfile(fbUser.uid, { name, email, role, isVerified: false, ...(company ? { company } : {}) });
-    await sendEmailVerification(fbUser);
+    await createUserProfile(fbUser.uid, {
+      name,
+      email,
+      role,
+      isVerified: true,
+      ...(company ? { company } : {}),
+      ...(phone ? { phone } : {}),
+    });
   };
 
   const resetPassword = async (email: string) => {

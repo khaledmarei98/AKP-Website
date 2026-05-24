@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { motion } from "framer-motion";
-import { Eye, EyeOff, Mail, Lock, User, Building2, ArrowRight, AlertCircle, CheckCircle } from "lucide-react";
+import { Eye, EyeOff, Mail, Lock, User, Building2, Phone, ArrowRight, AlertCircle, CheckCircle } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import type { UserRole } from "@/types";
 
@@ -34,6 +34,7 @@ export default function Register() {
   const [role, setRole] = useState<UserRole>("client");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [company, setCompany] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -58,7 +59,7 @@ export default function Register() {
     setIsLoading(true);
     setError("");
     try {
-      await register(name, email, password, role, company || undefined);
+      await register(name, email, password, role, company || undefined, phone || undefined);
       navigate("/dashboard");
     } catch (err) {
       setError(getErrorMessage(err));
@@ -182,6 +183,21 @@ export default function Register() {
                     placeholder="you@company.com"
                     className="w-full bg-white/8 border border-white/15 rounded-xl pl-11 pr-4 py-3.5 text-white placeholder:text-white/30 focus:outline-none focus:border-[#C9A84C] transition-colors text-sm"
                     data-testid="input-email"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-white/70 text-sm font-medium mb-2">Phone Number *</label>
+                <div className="relative">
+                  <Phone className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
+                  <input
+                    type="tel"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    placeholder="+20 10 1234 5678"
+                    className="w-full bg-white/8 border border-white/15 rounded-xl pl-11 pr-4 py-3.5 text-white placeholder:text-white/30 focus:outline-none focus:border-[#C9A84C] transition-colors text-sm"
+                    data-testid="input-phone"
                   />
                 </div>
               </div>

@@ -41,30 +41,19 @@ function LoadingScreen({ dark = false }: { dark?: boolean }) {
   );
 }
 
-/** Requires authenticated + email verified. Unverified → /auth/verify-email, unauthenticated → /auth/login */
+/** Requires authentication. Unauthenticated → /auth/login */
 function ProtectedRoute({ component: Component }: { component: React.ComponentType }) {
-  const { isAuthenticated, isLoading, user } = useAuth();
+  const { isAuthenticated, isLoading } = useAuth();
   if (isLoading) return <LoadingScreen />;
   if (!isAuthenticated) return <Redirect to="/auth/login" />;
-  if (!user?.isVerified) return <Redirect to="/auth/verify-email" />;
   return <Component />;
 }
 
-/** Only for authenticated-but-unverified users. Verified → /dashboard, unauthenticated → /auth/login */
-function VerifyEmailRoute({ component: Component }: { component: React.ComponentType }) {
-  const { isAuthenticated, isLoading, user } = useAuth();
-  if (isLoading) return <LoadingScreen dark />;
-  if (!isAuthenticated) return <Redirect to="/auth/login" />;
-  if (user?.isVerified) return <Redirect to="/dashboard" />;
-  return <Component />;
-}
-
-/** Only for unauthenticated users. Verified → /dashboard, unverified → /auth/verify-email */
+/** Only for unauthenticated users. Authenticated → /dashboard */
 function PublicOnlyRoute({ component: Component }: { component: React.ComponentType }) {
-  const { isAuthenticated, isLoading, user } = useAuth();
+  const { isAuthenticated, isLoading } = useAuth();
   if (isLoading) return <LoadingScreen dark />;
-  if (isAuthenticated && user?.isVerified) return <Redirect to="/dashboard" />;
-  if (isAuthenticated && !user?.isVerified) return <Redirect to="/auth/verify-email" />;
+  if (isAuthenticated) return <Redirect to="/dashboard" />;
   return <Component />;
 }
 
@@ -95,7 +84,7 @@ function Router() {
       </Route>
       <Route path="/auth/forgot-password" component={ForgotPassword} />
       <Route path="/auth/verify-email">
-        {() => <VerifyEmailRoute component={VerifyEmail} />}
+        {() => <Redirect to="/dashboard" />}
       </Route>
 
       {/* Protected routes */}
