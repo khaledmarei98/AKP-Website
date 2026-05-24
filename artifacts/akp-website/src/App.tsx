@@ -28,6 +28,7 @@ import VerifyEmail from "@/pages/auth/verify-email";
 import Dashboard from "@/pages/dashboard/index";
 import CourseDetail from "@/pages/course-detail";
 import Learn from "@/pages/learn";
+import VerifyCertificate from "@/pages/verify-certificate";
 
 import ChatWidget from "@/components/ChatWidget";
 
@@ -96,6 +97,9 @@ function Router() {
       <Route path="/dashboard">
         {() => <ProtectedRoute component={Dashboard} />}
       </Route>
+
+      {/* Certificate verification (public) */}
+      <Route path="/verify/:certificateId" component={VerifyCertificate} />
 
       {/* Legacy portal redirect */}
       <Route path="/portal">

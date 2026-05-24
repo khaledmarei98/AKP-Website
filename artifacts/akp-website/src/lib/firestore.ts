@@ -31,6 +31,7 @@ export const COLLECTIONS = {
   ENROLLMENTS: "enrollments",
   CLIENT_DOCUMENTS: "clientDocuments",
   CONTACT_MESSAGES: "contactMessages",
+  CERTIFICATES: "certificates",
 } as const;
 
 // ─── Generic helpers ───────────────────────────────────────────────────────────

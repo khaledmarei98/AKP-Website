@@ -6,24 +6,27 @@ import {
   LayoutDashboard, BookOpen, Calendar, FolderOpen, Receipt, Bell, HeadphonesIcon,
   Settings, ChevronRight, X, Upload, Download, TrendingUp, Users, Clock,
   BarChart3, CheckCircle, AlertCircle, FileText, Plus, ArrowUpRight,
-  LogOut, Shield, Play, Star, Library, Newspaper, ClipboardList, Mail, MessageSquare, Eye, Phone, PhoneCall, Loader2
+  LogOut, Shield, Play, Star, Library, Newspaper, ClipboardList, Mail, MessageSquare, Eye, Phone, PhoneCall, Award, Loader2
 } from "lucide-react";
 import { toast } from "sonner";
 import AdminLibrary from "@/components/dashboard/AdminLibrary";
 import AdminArticles from "@/components/dashboard/AdminArticles";
 import AdminBookings from "@/components/dashboard/AdminBookings";
 import AdminCourses from "@/components/dashboard/AdminCourses";
+import StudentCertificates from "@/components/dashboard/StudentCertificates";
+import AdminCertificates from "@/components/dashboard/AdminCertificates";
 import { useUserBookings } from "@/hooks/useBookings";
 import { useUserEnrollments } from "@/hooks/useCourses";
 import { SERVICE_LABELS, getAllContactMessages, updateContactMessageStatus, type FirestoreContactMessage, type ContactMessageStatus } from "@/lib/firestore";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 // Types
-type Section = "overview" | "courses" | "bookings" | "documents" | "invoices" | "notifications" | "support" | "settings" | "library" | "articles" | "bookings_admin" | "courses_admin" | "contacts_admin";
+type Section = "overview" | "courses" | "certificates" | "bookings" | "documents" | "invoices" | "notifications" | "support" | "settings" | "library" | "articles" | "bookings_admin" | "courses_admin" | "contacts_admin" | "certificates_admin";
 
 const baseNavItems: { id: Section; icon: typeof LayoutDashboard; label: string; badge?: number }[] = [
   { id: "overview", icon: LayoutDashboard, label: "Overview" },
   { id: "courses", icon: BookOpen, label: "My Courses" },
+  { id: "certificates", icon: Award, label: "Certificates" },
   { id: "bookings", icon: Calendar, label: "Bookings" },
   { id: "documents", icon: FolderOpen, label: "Documents", badge: 1 },
   { id: "invoices", icon: Receipt, label: "Invoices" },
@@ -38,6 +41,7 @@ const adminNavItems: { id: Section; icon: typeof LayoutDashboard; label: string;
   { id: "bookings_admin", icon: ClipboardList, label: "Bookings CMS" },
   { id: "courses_admin", icon: BookOpen, label: "Courses CMS" },
   { id: "contacts_admin", icon: Mail, label: "Contact Messages" },
+  { id: "certificates_admin", icon: Award, label: "Certificates Admin" },
 ];
 
 const documents = [
@@ -828,6 +832,16 @@ export default function Dashboard() {
           {/* CONTACT MESSAGES (admin) */}
           {activeSection === "contacts_admin" && isAdmin && (
             <ContactMessagesAdmin />
+          )}
+
+          {/* CERTIFICATES */}
+          {activeSection === "certificates" && (
+            <StudentCertificates />
+          )}
+
+          {/* CERTIFICATES ADMIN */}
+          {activeSection === "certificates_admin" && isAdmin && (
+            <AdminCertificates />
           )}
 
           {/* SETTINGS */}

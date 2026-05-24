@@ -1,0 +1,107 @@
+Implement a professional Certificate of Completion system for the AKP LMS platform.
+
+Certificates should be generated only when a student completes 100% of a course.
+
+==================================================
+CERTIFICATE GENERATION
+======================
+
+Generate a clean professional PDF certificate containing:
+
+* student name
+* course title
+* instructor name
+* completion date
+* certificate ID
+* AKP branding/logo
+* signature placeholders
+* verification text
+
+The certificate design should feel:
+
+* premium
+* corporate
+* professional
+* suitable for LinkedIn/CV usage
+
+==================================================
+CERTIFICATE STORAGE
+===================
+
+Store generated certificates in:
+
+* Firebase Storage
+
+Store metadata in:
+
+* Firestore
+
+Track:
+
+* certificateId
+* userId
+* courseId
+* issueDate
+* certificateUrl
+
+==================================================
+STUDENT EXPERIENCE
+==================
+
+In the student dashboard:
+
+* show earned certificates
+* allow PDF download
+* allow certificate viewing
+
+In the course learning experience:
+
+* automatically unlock certificate at 100% completion
+* show completion celebration state
+
+==================================================
+ADMIN FEATURES
+==============
+
+Admins should:
+
+* view issued certificates
+* verify certificate records
+* revoke certificates later if needed
+
+==================================================
+VERIFICATION PREPARATION
+========================
+
+Prepare future-ready certificate verification architecture.
+
+Support future public verification URLs like:
+
+* /verify/certificate-id
+
+For now:
+
+* implement the route/page structure
+* show certificate validity from Firestore
+
+==================================================
+TECHNICAL REQUIREMENTS
+======================
+
+Use:
+
+* scalable TypeScript architecture
+* proper Firebase integration
+* PDF generation library
+* Firebase Storage upload flow
+
+==================================================
+IMPORTANT
+=========
+
+* Keep implementation realistic and maintainable
+* Avoid fake/mock systems
+* Preserve the AKP premium dark/gold identity
+* Ensure Firestore security compatibility
+* Verify routes/imports/build pass correctly
+* Keep certificate generation performant

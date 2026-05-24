@@ -8,6 +8,8 @@ import {
   ChevronLeft, ChevronRight, CheckCircle, Play, FileText, Type,
   BookOpen, Menu, X, Loader2, Award, ArrowRight, Download, Lock
 } from "lucide-react";
+import { issueCertificate, type FirestoreCertificate } from "@/lib/certificates";
+import CertificateOverlay from "@/components/CertificateOverlay";
 
 const LESSON_ICONS: Record<string, typeof Play> = { video: Play, pdf: FileText, text: Type };
 
@@ -88,6 +90,8 @@ export default function Learn() {
   const [completing, setCompleting] = useState(false);
   const [completedLessons, setCompletedLessons] = useState<string[]>([]);
   const [progress, setProgress] = useState(0);
+  const [showCelebration, setShowCelebration] = useState(false);
+  const [celebCert, setCelebCert] = useState<FirestoreCertificate | null>(null);
 
   const loading = courseLoading || enrollLoading;
 
@@ -123,10 +127,24 @@ export default function Learn() {
     setCompleting(true);
     try {
       const result = await updateEnrollmentProgress(enrollment.id, currentLessonId, allLessonIds, completedLessons);
+      const wasJustCompleted = result.progress === 100 && progress < 100;
       setCompletedLessons(result.completedLessons);
       setProgress(result.progress);
       await refetch();
-      if (nextLesson) setCurrentLessonId(nextLesson.id);
+      if (wasJustCompleted) {
+        setShowCelebration(true);
+        if (user && course) {
+          issueCertificate({
+            userId: user.id,
+            courseId: course.id,
+            courseTitle: course.title,
+            studentName: user.name,
+            instructorName: course.instructor,
+          }).then(setCelebCert).catch(() => {});
+        }
+      } else if (nextLesson) {
+        setCurrentLessonId(nextLesson.id);
+      }
     } catch {
       // silent
     } finally {
@@ -167,6 +185,14 @@ export default function Learn() {
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col">
+      {showCelebration && (
+        <CertificateOverlay
+          cert={celebCert}
+          courseTitle={course?.title ?? ""}
+          studentName={user?.name ?? ""}
+          onClose={() => setShowCelebration(false)}
+        />
+      )}
       {/* Top bar */}
       <header className="fixed top-0 left-0 right-0 z-50 h-14 bg-sidebar border-b border-sidebar-border flex items-center px-4 gap-3">
         <button onClick={() => setSidebarOpen(!sidebarOpen)} className="p-1.5 rounded-lg hover:bg-sidebar-accent transition-colors lg:hidden">
