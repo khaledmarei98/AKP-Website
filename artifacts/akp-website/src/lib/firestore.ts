@@ -30,6 +30,7 @@ export const COLLECTIONS = {
   NOTIFICATIONS: "notifications",
   ENROLLMENTS: "enrollments",
   CLIENT_DOCUMENTS: "clientDocuments",
+  CONTACT_MESSAGES: "contactMessages",
 } as const;
 
 // ─── Generic helpers ───────────────────────────────────────────────────────────
@@ -244,6 +245,44 @@ export async function updateBookingStatus(
 
 export async function assignBooking(id: string, assignedTo: string): Promise<void> {
   return updateDocument(COLLECTIONS.BOOKINGS, id, { assignedTo });
+}
+
+// ─── Contact message helpers ───────────────────────────────────────────────────
+
+export type ContactMessageStatus = "new" | "read" | "replied" | "archived";
+export type ContactMessageSource = "contact_form" | "chat_escalation";
+
+export interface FirestoreContactMessage {
+  id: string;
+  name: string;
+  email: string;
+  phone?: string;
+  service?: string;
+  message: string;
+  source: ContactMessageSource;
+  chatTranscript?: { from: "bot" | "user"; text: string; timestamp: string }[];
+  status: ContactMessageStatus;
+  createdAt: unknown;
+  updatedAt: unknown;
+}
+
+export async function createContactMessage(
+  data: Omit<FirestoreContactMessage, "id" | "createdAt" | "updatedAt" | "status">
+): Promise<string> {
+  return createDocument(COLLECTIONS.CONTACT_MESSAGES, { ...data, status: "new" });
+}
+
+export async function getAllContactMessages(): Promise<FirestoreContactMessage[]> {
+  return queryDocuments<FirestoreContactMessage>(COLLECTIONS.CONTACT_MESSAGES, [
+    orderBy("createdAt", "desc"),
+  ]);
+}
+
+export async function updateContactMessageStatus(
+  id: string,
+  status: ContactMessageStatus
+): Promise<void> {
+  return updateDocument(COLLECTIONS.CONTACT_MESSAGES, id, { status });
 }
 
 // ─── Support ticket helpers ────────────────────────────────────────────────────

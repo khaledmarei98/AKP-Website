@@ -6,7 +6,7 @@ import {
   LayoutDashboard, BookOpen, Calendar, FolderOpen, Receipt, Bell, HeadphonesIcon,
   Settings, ChevronRight, X, Upload, Download, TrendingUp, Users, Clock,
   BarChart3, CheckCircle, AlertCircle, FileText, Plus, ArrowUpRight,
-  LogOut, Shield, Play, Star, Library, Newspaper, ClipboardList
+  LogOut, Shield, Play, Star, Library, Newspaper, ClipboardList, Mail, MessageSquare, Eye
 } from "lucide-react";
 import AdminLibrary from "@/components/dashboard/AdminLibrary";
 import AdminArticles from "@/components/dashboard/AdminArticles";
@@ -14,10 +14,11 @@ import AdminBookings from "@/components/dashboard/AdminBookings";
 import AdminCourses from "@/components/dashboard/AdminCourses";
 import { useUserBookings } from "@/hooks/useBookings";
 import { useUserEnrollments } from "@/hooks/useCourses";
-import { SERVICE_LABELS } from "@/lib/firestore";
+import { SERVICE_LABELS, getAllContactMessages, updateContactMessageStatus, type FirestoreContactMessage, type ContactMessageStatus } from "@/lib/firestore";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 // Types
-type Section = "overview" | "courses" | "bookings" | "documents" | "invoices" | "notifications" | "support" | "settings" | "library" | "articles" | "bookings_admin" | "courses_admin";
+type Section = "overview" | "courses" | "bookings" | "documents" | "invoices" | "notifications" | "support" | "settings" | "library" | "articles" | "bookings_admin" | "courses_admin" | "contacts_admin";
 
 const baseNavItems: { id: Section; icon: typeof LayoutDashboard; label: string; badge?: number }[] = [
   { id: "overview", icon: LayoutDashboard, label: "Overview" },
@@ -35,6 +36,7 @@ const adminNavItems: { id: Section; icon: typeof LayoutDashboard; label: string;
   { id: "articles", icon: Newspaper, label: "Articles CMS" },
   { id: "bookings_admin", icon: ClipboardList, label: "Bookings CMS" },
   { id: "courses_admin", icon: BookOpen, label: "Courses CMS" },
+  { id: "contacts_admin", icon: Mail, label: "Contact Messages" },
 ];
 
 const documents = [
@@ -106,6 +108,139 @@ function BarChart() {
         </div>
       ))}
     </div>
+  );
+}
+
+function ContactMessagesAdmin() {
+  const queryClient = useQueryClient();
+  const [expanded, setExpanded] = useState<string | null>(null);
+
+  const { data: messages = [], isLoading } = useQuery<FirestoreContactMessage[]>({
+    queryKey: ["contactMessages"],
+    queryFn: getAllContactMessages,
+  });
+
+  const mutation = useMutation({
+    mutationFn: ({ id, status }: { id: string; status: ContactMessageStatus }) =>
+      updateContactMessageStatus(id, status),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["contactMessages"] }),
+  });
+
+  const sourceLabel: Record<string, string> = {
+    contact_form: "Contact Form",
+    chat_escalation: "Chat Escalation",
+  };
+
+  const statusColors: Record<string, string> = {
+    new: "bg-blue-50 text-blue-700 dark:bg-blue-900/20 dark:text-blue-400",
+    read: "bg-muted text-muted-foreground",
+    replied: "bg-emerald-50 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-400",
+    archived: "bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400",
+  };
+
+  const newCount = messages.filter((m) => m.status === "new").length;
+
+  return (
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}>
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center gap-3">
+          <h1 className="text-2xl font-bold text-foreground">Contact Messages</h1>
+          {newCount > 0 && (
+            <span className="px-2.5 py-0.5 rounded-full bg-accent text-[#0A1628] text-xs font-bold">{newCount} new</span>
+          )}
+        </div>
+      </div>
+
+      {isLoading ? (
+        <div className="flex items-center justify-center h-48 text-muted-foreground text-sm">Loading messages...</div>
+      ) : messages.length === 0 ? (
+        <div className="bg-card border border-border rounded-2xl p-12 text-center">
+          <Mail className="w-10 h-10 text-muted-foreground mx-auto mb-3" />
+          <div className="font-semibold text-foreground mb-1">No messages yet</div>
+          <p className="text-sm text-muted-foreground">Contact form and chat escalation submissions will appear here.</p>
+        </div>
+      ) : (
+        <div className="space-y-3">
+          {messages.map((msg) => (
+            <div key={msg.id} className="bg-card border border-border rounded-2xl overflow-hidden">
+              <div
+                className="flex items-center gap-4 p-5 cursor-pointer hover:bg-muted/30 transition-colors"
+                onClick={() => {
+                  setExpanded(expanded === msg.id ? null : msg.id);
+                  if (msg.status === "new") mutation.mutate({ id: msg.id, status: "read" });
+                }}
+              >
+                <div className="w-10 h-10 rounded-full gold-gradient flex items-center justify-center text-[#0A1628] font-bold text-sm shrink-0">
+                  {msg.name.charAt(0).toUpperCase()}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="font-semibold text-foreground text-sm">{msg.name}</span>
+                    <span className={`px-2 py-0.5 rounded-full text-[10px] font-medium ${statusColors[msg.status]}`}>{msg.status}</span>
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-medium bg-muted text-muted-foreground flex items-center gap-1">
+                      {msg.source === "chat_escalation" ? <MessageSquare className="w-2.5 h-2.5" /> : <Mail className="w-2.5 h-2.5" />}
+                      {sourceLabel[msg.source]}
+                    </span>
+                  </div>
+                  <div className="text-xs text-muted-foreground mt-0.5">{msg.email}{msg.phone ? ` · ${msg.phone}` : ""}{msg.service ? ` · ${msg.service}` : ""}</div>
+                  <p className="text-sm text-foreground/70 mt-1 truncate">{msg.message}</p>
+                </div>
+                <ChevronRight className={`w-4 h-4 text-muted-foreground shrink-0 transition-transform ${expanded === msg.id ? "rotate-90" : ""}`} />
+              </div>
+
+              {expanded === msg.id && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  className="border-t border-border"
+                >
+                  <div className="p-5 space-y-4">
+                    <div>
+                      <div className="text-xs font-medium text-muted-foreground mb-1.5">Message</div>
+                      <p className="text-sm text-foreground bg-muted rounded-xl p-4 leading-relaxed">{msg.message}</p>
+                    </div>
+
+                    {msg.chatTranscript && msg.chatTranscript.length > 0 && (
+                      <div>
+                        <div className="text-xs font-medium text-muted-foreground mb-2">Chat Transcript</div>
+                        <div className="space-y-2 max-h-48 overflow-y-auto bg-muted rounded-xl p-3">
+                          {msg.chatTranscript.map((t, i) => (
+                            <div key={i} className={`flex gap-2 text-xs ${t.from === "user" ? "flex-row-reverse" : ""}`}>
+                              <span className={`px-3 py-1.5 rounded-xl max-w-[80%] ${t.from === "user" ? "bg-[#0A1628] text-white" : "bg-white dark:bg-[#0A1628]/80 text-foreground border border-border"}`}>
+                                {t.text}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    <div className="flex items-center gap-2 flex-wrap">
+                      {(["new", "read", "replied", "archived"] as ContactMessageStatus[]).map((s) => (
+                        <button
+                          key={s}
+                          onClick={() => mutation.mutate({ id: msg.id, status: s })}
+                          className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-all ${msg.status === s ? "border-accent text-accent bg-accent/10" : "border-border text-muted-foreground hover:border-accent hover:text-accent"}`}
+                        >
+                          Mark as {s}
+                        </button>
+                      ))}
+                      <a
+                        href={`mailto:${msg.email}`}
+                        className="ml-auto flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium gold-gradient text-[#0A1628] hover:opacity-90 transition-opacity"
+                      >
+                        <Mail className="w-3 h-3" /> Reply by Email
+                      </a>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+    </motion.div>
   );
 }
 
@@ -663,6 +798,11 @@ export default function Dashboard() {
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}>
               <AdminCourses />
             </motion.div>
+          )}
+
+          {/* CONTACT MESSAGES (admin) */}
+          {activeSection === "contacts_admin" && isAdmin && (
+            <ContactMessagesAdmin />
           )}
 
           {/* SETTINGS */}

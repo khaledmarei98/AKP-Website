@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -10,7 +10,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { MapPin, Phone, Mail, Clock, Linkedin, Facebook, Twitter, Instagram, MessageCircle, CheckCircle } from "lucide-react";
-import { useState } from "react";
+import { createContactMessage } from "@/lib/firestore";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -72,8 +73,20 @@ export default function Contact() {
     },
   });
 
-  function onSubmit(_data: FormValues) {
-    setTimeout(() => setSubmitted(true), 600);
+  async function onSubmit(data: FormValues) {
+    try {
+      await createContactMessage({
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+        service: data.service,
+        message: data.message,
+        source: "contact_form",
+      });
+      setSubmitted(true);
+    } catch {
+      toast.error("Failed to send message. Please try again or call us directly.");
+    }
   }
 
   return (
