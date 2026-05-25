@@ -13,12 +13,39 @@ function LinkedInIcon({ className }: { className?: string }) {
   );
 }
 
+const MONTH_MAP: Record<string, number> = {
+  January: 1, February: 2, March: 3, April: 4, May: 5, June: 6,
+  July: 7, August: 8, September: 9, October: 10, November: 11, December: 12,
+};
+
+function parseIssueDate(issueDate: string): { month: number; year: number } {
+  const parts = issueDate.split(" ");
+  const month = MONTH_MAP[parts[1]] ?? new Date().getMonth() + 1;
+  const year = parseInt(parts[2]) || new Date().getFullYear();
+  return { month, year };
+}
+
 function getLinkedInShareUrl(cert: FirestoreCertificate): string {
   const origin = typeof window !== "undefined" ? window.location.origin : "https://akpconsulting.com";
   const verifyUrl = `${origin}/verify/${cert.id}`;
   const title = `Certificate of Completion – ${cert.courseTitle}`;
   const summary = `I'm proud to share that I've completed "${cert.courseTitle}" and earned a Certificate of Completion from AKP Consulting Egypt! Instructed by ${cert.instructorName}. #ProfessionalDevelopment #Finance #Consulting`;
   return `https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(verifyUrl)}&title=${encodeURIComponent(title)}&summary=${encodeURIComponent(summary)}&source=AKP+Consulting`;
+}
+
+function getLinkedInAddToProfileUrl(cert: FirestoreCertificate): string {
+  const origin = typeof window !== "undefined" ? window.location.origin : "https://akpconsulting.com";
+  const verifyUrl = `${origin}/verify/${cert.id}`;
+  const { month, year } = parseIssueDate(cert.issueDate);
+  const params = new URLSearchParams({
+    startTask: "CERTIFICATION_NAME",
+    name: cert.courseTitle,
+    issueYear: String(year),
+    issueMonth: String(month),
+    certUrl: verifyUrl,
+    certId: cert.id,
+  });
+  return `https://www.linkedin.com/profile/add?${params.toString()}`;
 }
 
 export default function StudentCertificates() {
@@ -110,15 +137,28 @@ export default function StudentCertificates() {
                       </button>
                     </div>
                   </div>
-                  <a
-                    href={getLinkedInShareUrl(cert)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full py-2 rounded-lg text-white text-xs font-semibold flex items-center justify-center gap-1.5 hover:opacity-90 transition-opacity"
-                    style={{ background: "#0A66C2" }}
-                  >
-                    <LinkedInIcon className="w-3.5 h-3.5" /> Share on LinkedIn
-                  </a>
+                  <div className="flex gap-2">
+                    <a
+                      href={getLinkedInAddToProfileUrl(cert)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex-1 py-2 rounded-lg text-white text-xs font-semibold flex items-center justify-center gap-1.5 hover:opacity-90 transition-colors"
+                      style={{ background: "#0A66C2" }}
+                      title="Add to LinkedIn Certifications section"
+                    >
+                      <LinkedInIcon className="w-3.5 h-3.5" /> Add to Profile
+                    </a>
+                    <a
+                      href={getLinkedInShareUrl(cert)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex-1 py-2 rounded-lg text-[#0A66C2] text-xs font-semibold flex items-center justify-center gap-1.5 hover:bg-[#0A66C2]/10 transition-colors"
+                      style={{ border: "1px solid #0A66C2" }}
+                      title="Share a LinkedIn post"
+                    >
+                      <LinkedInIcon className="w-3.5 h-3.5" /> Share Post
+                    </a>
+                  </div>
                 </div>
               </div>
             </motion.div>
