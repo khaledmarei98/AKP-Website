@@ -1,0 +1,249 @@
+Upgrade the AKP platform from a feature-based system into a real operational business platform while preserving the existing architecture, Firebase integration, and premium AKP dark/gold identity.
+
+IMPORTANT:
+Do NOT redesign the platform.
+Do NOT break existing systems.
+Focus on realistic production-ready implementation.
+
+==================================================
+
+1. PAYMENTS SYSTEM
+   ==================================================
+
+Implement a scalable payment architecture for:
+
+* paid courses
+* subscriptions
+* consulting services
+* bookings
+
+Prepare support for:
+
+* Paymob (primary)
+* Stripe (future-ready)
+* Vodafone Cash/manual payments (future-ready)
+
+Features:
+
+* payment status tracking
+* successful/failed payment states
+* invoice placeholders
+* transaction records
+* enrollment/payment linking
+* subscription architecture
+
+Do NOT overengineer billing yet.
+Keep implementation clean and scalable.
+
+==================================================
+2. WHATSAPP INTEGRATION
+=======================
+
+Implement WhatsApp integration architecture.
+
+Features:
+
+* click-to-WhatsApp support buttons
+* WhatsApp contact CTAs
+* booking WhatsApp follow-up preparation
+* floating WhatsApp support button
+* mobile-friendly behavior
+
+Prepare future notification integration.
+
+==================================================
+3. REAL ADMIN ANALYTICS
+=======================
+
+Build a real analytics dashboard using Firestore data.
+
+Show:
+
+* total users
+* active users
+* enrollments
+* bookings
+* resource downloads
+* issued certificates
+* article views placeholders
+* revenue placeholders
+* course completion rates
+
+Create:
+
+* charts
+* analytics cards
+* recent activity widgets
+
+Keep analytics scalable and performant.
+
+==================================================
+4. SMART NOTIFICATION SYSTEM
+============================
+
+Implement a real in-app notification system.
+
+Support:
+
+* booking updates
+* enrollment confirmations
+* certificate issuance
+* admin announcements
+* article updates
+* reminders
+
+Features:
+
+* unread/read states
+* notification dropdown
+* dashboard notifications page
+* Firestore-backed notifications
+
+Prepare future push/email notifications.
+
+==================================================
+5. PWA / MOBILE APP PREPARATION
+===============================
+
+Convert the platform into a professional Progressive Web App.
+
+Implement:
+
+* installable app support
+* manifest.json
+* app icons
+* splash screen
+* offline-ready architecture placeholders
+* responsive mobile experience
+* mobile navigation improvements
+
+The platform should feel app-like on mobile devices.
+
+==================================================
+6. CRM & LEADS MANAGEMENT
+=========================
+
+Implement a CRM-style leads and client management system.
+
+Features:
+
+* leads database
+* client tracking
+* inquiry management
+* status pipeline
+* assigned staff placeholders
+* follow-up notes
+* lead source tracking
+* lead conversion tracking
+
+Admin dashboard should support:
+
+* filtering
+* searching
+* lead status management
+
+==================================================
+7. TEAM MANAGEMENT SYSTEM
+=========================
+
+Implement internal staff/team management architecture.
+
+Features:
+
+* staff accounts
+* permission groups
+* task placeholders
+* internal notes
+* assigned clients
+* activity logs
+* role management improvements
+
+Prepare scalable internal operations architecture.
+
+==================================================
+8. REAL AI FEATURES PREPARATION
+===============================
+
+Prepare production-ready AI assistant architecture.
+
+Create modular AI areas for future:
+
+* AI Tax Assistant
+* AI Financial Assistant
+* AI HR Assistant
+* AI Document Analyzer
+* AI Business Consultant
+
+Features:
+
+* AI chat interface improvements
+* conversation history structure
+* assistant selection
+* AI response cards
+* upload placeholders for AI analysis
+
+Do NOT integrate expensive AI APIs yet.
+Focus on scalable architecture and UX.
+
+==================================================
+9. REAL EMAIL SYSTEM
+====================
+
+Implement real email architecture preparation.
+
+Support future:
+
+* welcome emails
+* booking confirmations
+* certificate emails
+* newsletter emails
+* admin alerts
+* password reset emails
+
+Create:
+
+* email template system
+* notification triggers architecture
+* email queue placeholders
+
+Keep implementation Firebase-compatible.
+
+==================================================
+10. SEO & CONTENT EXPANSION SYSTEM
+==================================
+
+Strengthen the platform SEO architecture.
+
+Implement:
+
+* dynamic SEO metadata
+* structured data improvements
+* sitemap preparation
+* robots.txt
+* canonical URLs
+* Open Graph improvements
+* article SEO optimization
+* service SEO optimization
+
+Prepare scalable content architecture for:
+
+* tax guides
+* HR guides
+* downloadable templates
+* legal updates
+* landing pages
+
+==================================================
+GLOBAL REQUIREMENTS
+===================
+
+* Preserve all existing systems
+* Preserve Firebase architecture
+* Preserve AKP visual identity
+* Use scalable TypeScript architecture
+* Avoid fake/mock systems where possible
+* Avoid unnecessary enterprise complexity
+* Ensure responsive behavior
+* Ensure Firestore security compatibility
+* Verify all routes/imports/build pass correctly
+* Keep the platform production-ready and maintainable

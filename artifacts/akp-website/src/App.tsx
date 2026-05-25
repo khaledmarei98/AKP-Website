@@ -31,6 +31,7 @@ import Learn from "@/pages/learn";
 import VerifyCertificate from "@/pages/verify-certificate";
 
 import ChatWidget from "@/components/ChatWidget";
+import WhatsAppButton from "@/components/WhatsAppButton";
 
 const queryClient = new QueryClient();
 
@@ -121,6 +122,7 @@ function App() {
               <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
                 <Router />
                 <ChatWidget />
+                <WhatsAppButton />
               </WouterRouter>
               <Toaster />
             </TooltipProvider>

@@ -32,6 +32,9 @@ export const COLLECTIONS = {
   CLIENT_DOCUMENTS: "clientDocuments",
   CONTACT_MESSAGES: "contactMessages",
   CERTIFICATES: "certificates",
+  PAYMENTS: "payments",
+  LEADS: "leads",
+  TEAM_MEMBERS: "teamMembers",
 } as const;
 
 // ─── Generic helpers ───────────────────────────────────────────────────────────
@@ -689,4 +692,153 @@ export async function updateEnrollmentProgress(
     lastLessonId: lessonId,
   });
   return { completedLessons, progress };
+}
+
+// ─── Notification helpers (extended) ──────────────────────────────────────────
+
+export async function createNotification(
+  data: Omit<FirestoreNotification, "id" | "createdAt">
+): Promise<string> {
+  return createDocument(COLLECTIONS.NOTIFICATIONS, { ...data });
+}
+
+export async function markAllNotificationsRead(userId: string): Promise<void> {
+  const unread = await queryDocuments<FirestoreNotification>(COLLECTIONS.NOTIFICATIONS, [
+    where("userId", "==", userId),
+    where("read", "==", false),
+  ]);
+  await Promise.all(unread.map((n) => updateDocument(COLLECTIONS.NOTIFICATIONS, n.id, { read: true })));
+}
+
+// ─── Payment helpers ───────────────────────────────────────────────────────────
+
+export type PaymentStatus = "pending" | "completed" | "failed" | "refunded" | "cancelled";
+export type PaymentMethod = "paymob" | "stripe" | "vodafone_cash" | "manual";
+
+export interface FirestorePayment {
+  id: string;
+  userId: string;
+  customerName: string;
+  email: string;
+  orderId: string;
+  amount: number;
+  currency: "EGP" | "USD";
+  status: PaymentStatus;
+  method: PaymentMethod;
+  description: string;
+  relatedType?: "course" | "subscription" | "booking" | "service";
+  relatedId?: string;
+  invoiceNumber?: string;
+  paymobOrderId?: string;
+  paymobTransactionId?: string;
+  failureReason?: string;
+  createdAt: unknown;
+  updatedAt: unknown;
+}
+
+export async function createPayment(
+  data: Omit<FirestorePayment, "id" | "createdAt" | "updatedAt">
+): Promise<string> {
+  return createDocument(COLLECTIONS.PAYMENTS, data);
+}
+
+export async function getUserPayments(userId: string): Promise<FirestorePayment[]> {
+  return queryDocuments<FirestorePayment>(COLLECTIONS.PAYMENTS, [
+    where("userId", "==", userId),
+    orderBy("createdAt", "desc"),
+  ]);
+}
+
+export async function getAllPayments(): Promise<FirestorePayment[]> {
+  return queryDocuments<FirestorePayment>(COLLECTIONS.PAYMENTS, [
+    orderBy("createdAt", "desc"),
+  ]);
+}
+
+export async function updatePaymentStatus(
+  id: string,
+  status: PaymentStatus,
+  extra?: Partial<FirestorePayment>
+): Promise<void> {
+  return updateDocument(COLLECTIONS.PAYMENTS, id, { status, ...extra });
+}
+
+// ─── Lead / CRM helpers ────────────────────────────────────────────────────────
+
+export type LeadStatus = "new" | "contacted" | "qualified" | "proposal" | "won" | "lost";
+export type LeadSource = "website" | "referral" | "social" | "direct" | "booking" | "contact_form";
+export type LeadPriority = "low" | "medium" | "high";
+
+export interface FirestoreLead {
+  id: string;
+  name: string;
+  email: string;
+  phone?: string;
+  company?: string;
+  source: LeadSource;
+  service?: string;
+  status: LeadStatus;
+  priority: LeadPriority;
+  assignedTo?: string;
+  notes?: string;
+  estimatedValue?: number;
+  followUpDate?: string;
+  convertedUserId?: string;
+  createdAt: unknown;
+  updatedAt: unknown;
+}
+
+export async function createLead(
+  data: Omit<FirestoreLead, "id" | "createdAt" | "updatedAt">
+): Promise<string> {
+  return createDocument(COLLECTIONS.LEADS, data);
+}
+
+export async function getAllLeads(): Promise<FirestoreLead[]> {
+  return queryDocuments<FirestoreLead>(COLLECTIONS.LEADS, [
+    orderBy("createdAt", "desc"),
+  ]);
+}
+
+export async function updateLeadStatus(id: string, status: LeadStatus): Promise<void> {
+  return updateDocument(COLLECTIONS.LEADS, id, { status });
+}
+
+// ─── Team member helpers ───────────────────────────────────────────────────────
+
+export type TeamRole = "super_admin" | "admin_staff" | "instructor" | "consultant" | "accounting_partner";
+export type TeamDepartment = "Management" | "Tax" | "Accounting" | "HR" | "Technology" | "Marketing";
+
+export interface FirestoreTeamMember {
+  id: string;
+  name: string;
+  email: string;
+  phone?: string;
+  role: TeamRole;
+  department: TeamDepartment;
+  isActive: boolean;
+  joinedDate?: string;
+  notes?: string;
+  permissions: string[];
+  createdAt: unknown;
+  updatedAt: unknown;
+}
+
+export async function createTeamMember(
+  data: Omit<FirestoreTeamMember, "id" | "createdAt" | "updatedAt">
+): Promise<string> {
+  return createDocument(COLLECTIONS.TEAM_MEMBERS, data);
+}
+
+export async function getAllTeamMembers(): Promise<FirestoreTeamMember[]> {
+  return queryDocuments<FirestoreTeamMember>(COLLECTIONS.TEAM_MEMBERS, [
+    orderBy("createdAt", "desc"),
+  ]);
+}
+
+export async function updateTeamMember(
+  id: string,
+  data: Partial<Omit<FirestoreTeamMember, "id" | "createdAt">>
+): Promise<void> {
+  return updateDocument(COLLECTIONS.TEAM_MEMBERS, id, data);
 }

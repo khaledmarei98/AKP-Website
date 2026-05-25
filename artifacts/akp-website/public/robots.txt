@@ -1,2 +1,10 @@
 User-agent: *
 Allow: /
+
+# Disallow private areas
+Disallow: /dashboard
+Disallow: /auth/
+Disallow: /learn/
+
+# Sitemap
+Sitemap: https://akp-consulting.com/sitemap.xml

@@ -6,7 +6,8 @@ import {
   LayoutDashboard, BookOpen, Calendar, FolderOpen, Receipt, Bell, HeadphonesIcon,
   Settings, ChevronRight, X, Upload, Download, TrendingUp, Users, Clock,
   BarChart3, CheckCircle, AlertCircle, FileText, Plus, ArrowUpRight,
-  LogOut, Shield, Play, Star, Library, Newspaper, ClipboardList, Mail, MessageSquare, Eye, Phone, PhoneCall, Award, Loader2
+  LogOut, Shield, Play, Star, Library, Newspaper, ClipboardList, Mail, MessageSquare, Eye, Phone, PhoneCall, Award, Loader2,
+  CreditCard, UserCog, Sparkles, Target,
 } from "lucide-react";
 import { toast } from "sonner";
 import AdminLibrary from "@/components/dashboard/AdminLibrary";
@@ -15,13 +16,18 @@ import AdminBookings from "@/components/dashboard/AdminBookings";
 import AdminCourses from "@/components/dashboard/AdminCourses";
 import StudentCertificates from "@/components/dashboard/StudentCertificates";
 import AdminCertificates from "@/components/dashboard/AdminCertificates";
+import AdminAnalytics from "@/components/dashboard/AdminAnalytics";
+import AdminPayments from "@/components/dashboard/AdminPayments";
+import AdminLeads from "@/components/dashboard/AdminLeads";
+import AdminTeam from "@/components/dashboard/AdminTeam";
+import AIAssistant from "@/components/dashboard/AIAssistant";
 import { useUserBookings } from "@/hooks/useBookings";
 import { useUserEnrollments } from "@/hooks/useCourses";
 import { SERVICE_LABELS, getAllContactMessages, updateContactMessageStatus, type FirestoreContactMessage, type ContactMessageStatus } from "@/lib/firestore";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 // Types
-type Section = "overview" | "courses" | "certificates" | "bookings" | "documents" | "invoices" | "notifications" | "support" | "settings" | "library" | "articles" | "bookings_admin" | "courses_admin" | "contacts_admin" | "certificates_admin";
+type Section = "overview" | "courses" | "certificates" | "bookings" | "documents" | "invoices" | "notifications" | "support" | "settings" | "library" | "articles" | "bookings_admin" | "courses_admin" | "contacts_admin" | "certificates_admin" | "analytics" | "payments_admin" | "leads_admin" | "team_admin" | "ai_assistant";
 
 const baseNavItems: { id: Section; icon: typeof LayoutDashboard; label: string; badge?: number }[] = [
   { id: "overview", icon: LayoutDashboard, label: "Overview" },
@@ -31,11 +37,16 @@ const baseNavItems: { id: Section; icon: typeof LayoutDashboard; label: string; 
   { id: "documents", icon: FolderOpen, label: "Documents", badge: 1 },
   { id: "invoices", icon: Receipt, label: "Invoices" },
   { id: "notifications", icon: Bell, label: "Notifications", badge: 3 },
+  { id: "ai_assistant", icon: Sparkles, label: "AI Assistants" },
   { id: "support", icon: HeadphonesIcon, label: "Support" },
   { id: "settings", icon: Settings, label: "Settings" },
 ];
 
 const adminNavItems: { id: Section; icon: typeof LayoutDashboard; label: string; badge?: number }[] = [
+  { id: "analytics", icon: BarChart3, label: "Analytics" },
+  { id: "payments_admin", icon: CreditCard, label: "Payments" },
+  { id: "leads_admin", icon: Target, label: "CRM / Leads" },
+  { id: "team_admin", icon: UserCog, label: "Team" },
   { id: "library", icon: Library, label: "Library Admin" },
   { id: "articles", icon: Newspaper, label: "Articles CMS" },
   { id: "bookings_admin", icon: ClipboardList, label: "Bookings CMS" },
@@ -842,6 +853,31 @@ export default function Dashboard() {
           {/* CERTIFICATES ADMIN */}
           {activeSection === "certificates_admin" && isAdmin && (
             <AdminCertificates />
+          )}
+
+          {/* AI ASSISTANT */}
+          {activeSection === "ai_assistant" && (
+            <AIAssistant />
+          )}
+
+          {/* ANALYTICS (admin) */}
+          {activeSection === "analytics" && isAdmin && (
+            <AdminAnalytics />
+          )}
+
+          {/* PAYMENTS (admin) */}
+          {activeSection === "payments_admin" && isAdmin && (
+            <AdminPayments />
+          )}
+
+          {/* CRM / LEADS (admin) */}
+          {activeSection === "leads_admin" && isAdmin && (
+            <AdminLeads />
+          )}
+
+          {/* TEAM MANAGEMENT (admin) */}
+          {activeSection === "team_admin" && isAdmin && (
+            <AdminTeam />
           )}
 
           {/* SETTINGS */}

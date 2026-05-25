@@ -1,0 +1,39 @@
+{
+  "name": "AKP Consulting",
+  "short_name": "AKP",
+  "description": "Egypt's Premier Accounting, Finance & HR Consulting Platform",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0A1628",
+  "theme_color": "#C9A84C",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["business", "finance", "education"],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Dashboard",
+      "url": "/dashboard",
+      "description": "Open your client dashboard"
+    },
+    {
+      "name": "Book Consultation",
+      "url": "/booking",
+      "description": "Book a consulting session"
+    },
+    {
+      "name": "Online Courses",
+      "url": "/courses",
+      "description": "Browse AKP training courses"
+    }
+  ]
+}
