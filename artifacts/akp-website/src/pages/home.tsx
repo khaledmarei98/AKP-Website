@@ -29,7 +29,7 @@ function useCounter(target: number, duration: number, start: boolean) {
 
 const stats = [
   { label: "Years Experience", value: 15, suffix: "+" },
-  { label: "Clients Served", value: 500, suffix: "+" },
+  { label: "Clients Served", value: 1000, suffix: "+" },
   { label: "Courses Available", value: 120, suffix: "+" },
   { label: "Articles Published", value: 300, suffix: "+" },
 ];
