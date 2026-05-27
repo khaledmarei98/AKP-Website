@@ -7,7 +7,7 @@ import { AuthProvider, useAuth } from "@/context/AuthContext";
 import { LanguageProvider } from "@/context/LanguageContext";
 
 import NotFound from "@/pages/not-found";
-import Home from "@/pages/home";
+import Home from "@/pages/ئئئئئئئئئئ";
 import About from "@/pages/about";
 import Services from "@/pages/services";
 import Library from "@/pages/library";
