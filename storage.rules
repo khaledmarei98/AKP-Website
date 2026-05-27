@@ -129,6 +129,185 @@ service firebase.storage {
       allow delete: if isAdmin();
     }
 
+    match /courses/{courseId}/thumbnails/{filename} {
+      allow read: if true;
+      allow write: if isInstructor()
+                   && isUnderSizeLimit(10)
+                   && isImageFile();
+      allow delete: if isAdmin();
+    }
+
+    match /courses/{courseId}/lessons/{lessonId}/{kind}/{filename} {
+      allow read: if isSignedIn();
+      allow write: if isInstructor() && isUnderSizeLimit(500);
+      allow delete: if isAdmin();
+    }
+
+    // ─── Article images ───────────────────────────────────────────────────────
+    // articles/{articleId}/{filename}
+    //   Read:  public
+    //   Write: admin only, max 10 MB, images only
+
+    match /articles/{articleId}/{filename} {
+      allow read: if true;
+      allow write: if isAdmin()
+                   && isUnderSizeLimit(10)
+                   && isImageFile();
+      allow delete: if isAdmin();
+    }
+
+    // ─── Booking attachments ─────────────────────────────────────────────────
+    // Visitors can attach supporting documents/images to a booking request.
+
+    match /bookings/{bookingRef}/attachments/{filename} {
+      allow read: if isAdmin();
+      allow create: if isUnderSizeLimit(25)
+                    && (isDocumentFile() || isImageFile());
+      allow delete: if isAdmin();
+    }
+
+    // ─── Deny all other paths ─────────────────────────────────────────────────
+    // Any path not explicitly matched above is denied.
+    // This is implicit in Firebase Storage rules, but making it explicit
+    // signals intent and guards against accidental path additions.
+
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+
+  }
+}
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// AKP Consulting Platform — Firebase Storage Security Rules
+//
+// Deploy via:
+//   firebase deploy --only storage
+//
+// Or in Firebase Console:
+//   Storage > Rules > paste this content > Publish
+//
+// ── Admin role enforcement ────────────────────────────────────────────────────
+// Storage rules cannot read Firestore, so admin roles are enforced via
+// Firebase Auth custom claims. Set these with the Admin SDK:
+//
+//   import { scripts/src/set-admin-claims.ts } (see that file for usage)
+//
+// The claim structure expected by these rules:
+//   { role: "super_admin" | "admin_staff" | "instructor" | "client" | "student" | "accounting_partner" }
+//
+// Until custom claims are set, restrict admin Storage writes by deploying
+// these rules and using the Admin SDK script to grant claims to your admins.
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // ─── Helper functions ────────────────────────────────────────────────────
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(uid) {
+      return isSignedIn() && request.auth.uid == uid;
+    }
+
+    function userRole() {
+      return request.auth.token.get('role', '');
+    }
+
+    function isAdmin() {
+      return isSignedIn() && userRole() in ['super_admin', 'admin_staff'];
+    }
+
+    function isInstructor() {
+      return isSignedIn() && userRole() in ['super_admin', 'admin_staff', 'instructor'];
+    }
+
+    // File size guard — prevent abuse via oversized uploads
+    function isUnderSizeLimit(limitMB) {
+      return request.resource.size < limitMB * 1024 * 1024;
+    }
+
+    // Restrict uploads to expected MIME types for document resources
+    function isDocumentFile() {
+      return request.resource.contentType in [
+        'application/pdf',
+        'application/vnd.ms-excel',
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        'application/msword',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+      ];
+    }
+
+    function isImageFile() {
+      return request.resource.contentType.matches('image/.*');
+    }
+
+    // ─── Library resource files ───────────────────────────────────────────────
+    // library/files/{resourceId}/{filename}
+    //   Read:  public (anyone can download resources)
+    //   Write: admin only, max 100 MB per file, document formats only
+
+    match /library/files/{resourceId}/{filename} {
+      allow read: if true;
+      allow write: if isAdmin()
+                   && isUnderSizeLimit(100)
+                   && isDocumentFile();
+      allow delete: if isAdmin();
+    }
+
+    // ─── Library thumbnails ───────────────────────────────────────────────────
+    // library/thumbnails/{resourceId}/{filename}
+    //   Read:  public
+    //   Write: admin only, max 5 MB, images only
+
+    match /library/thumbnails/{resourceId}/{filename} {
+      allow read: if true;
+      allow write: if isAdmin()
+                   && isUnderSizeLimit(5)
+                   && isImageFile();
+      allow delete: if isAdmin();
+    }
+
+    // ─── Client documents ─────────────────────────────────────────────────────
+    // clients/{userId}/documents/{filename}
+    //   Read:  owning user or admin
+    //   Write: owning user (max 50 MB, document formats), admin can also write
+
+    match /clients/{userId}/documents/{filename} {
+      allow read: if isOwner(userId) || isAdmin();
+      allow write: if (isOwner(userId) && isUnderSizeLimit(50) && isDocumentFile())
+                   || isAdmin();
+      allow delete: if isOwner(userId) || isAdmin();
+    }
+
+    // ─── Avatars ──────────────────────────────────────────────────────────────
+    // avatars/{userId}/{filename}
+    //   Read:  public (avatars shown in UI to other users)
+    //   Write: owning authenticated user only, max 5 MB, images only
+
+    match /avatars/{userId}/{filename} {
+      allow read: if true;
+      allow write: if isOwner(userId)
+                   && isUnderSizeLimit(5)
+                   && isImageFile();
+      allow delete: if isOwner(userId) || isAdmin();
+    }
+
+    // ─── Course resources ─────────────────────────────────────────────────────
+    // courses/{courseId}/resources/{filename}
+    //   Read:  authenticated users (enrolled check is best done server-side)
+    //   Write: instructors and above, max 500 MB
+
+    match /courses/{courseId}/resources/{filename} {
+      allow read: if isSignedIn();
+      allow write: if isInstructor() && isUnderSizeLimit(500);
+      allow delete: if isAdmin();
+    }
+
     // ─── Article images ───────────────────────────────────────────────────────
     // articles/{articleId}/{filename}
     //   Read:  public
