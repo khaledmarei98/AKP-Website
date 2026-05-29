@@ -34,7 +34,7 @@ function mapFirestoreUser(fbUser: FirebaseUser, profile: FirestoreUser | null): 
     role: profile?.role ?? "client",
     company: profile?.company,
     avatar: profile?.avatar ?? fbUser.photoURL ?? undefined,
-    isVerified: true,
+    isVerified: profile?.isVerified ?? fbUser.emailVerified ?? false,
     createdAt: fbUser.metadata.creationTime ?? new Date().toISOString(),
   };
 }
@@ -162,10 +162,13 @@ function useFirebaseAuth() {
       name,
       email,
       role,
-      isVerified: true,
+      isVerified: fbUser.emailVerified,
       ...(company ? { company } : {}),
       ...(phone ? { phone } : {}),
     });
+    if (!fbUser.emailVerified) {
+      await sendEmailVerification(fbUser);
+    }
   };
 
   const resetPassword = async (email: string) => {

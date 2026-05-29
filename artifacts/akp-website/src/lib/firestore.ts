@@ -213,7 +213,13 @@ export const REQUEST_TYPE_LABELS: Record<RequestType, string> = {
 export async function createBooking(
   data: Omit<FirestoreBooking, "id" | "createdAt" | "updatedAt">
 ): Promise<string> {
-  return createDocument(COLLECTIONS.BOOKINGS, data);
+  // Ensure required fields exist and normalize optional fields
+  const payload = {
+    ...data,
+    attachments: data.attachments ?? [],
+    notificationsSent: data.notificationsSent ?? { clientConfirmation: false, adminAlert: false, statusUpdates: [] },
+  } as Omit<FirestoreBooking, "id" | "createdAt" | "updatedAt">;
+  return createDocument(COLLECTIONS.BOOKINGS, payload);
 }
 
 export async function getUserBookings(userId: string): Promise<FirestoreBooking[]> {

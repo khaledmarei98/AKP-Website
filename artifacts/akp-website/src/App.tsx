@@ -46,8 +46,10 @@ function LoadingScreen({ dark = false }: { dark?: boolean }) {
 /** Requires authentication. Unauthenticated → /auth/login */
 function ProtectedRoute({ component: Component }: { component: React.ComponentType }) {
   const { isAuthenticated, isLoading } = useAuth();
+  const { user } = useAuth();
   if (isLoading) return <LoadingScreen />;
   if (!isAuthenticated) return <Redirect to="/auth/login" />;
+  if (user && !user.isVerified) return <Redirect to="/auth/verify-email" />;
   return <Component />;
 }
 
@@ -86,7 +88,7 @@ function Router() {
       </Route>
       <Route path="/auth/forgot-password" component={ForgotPassword} />
       <Route path="/auth/verify-email">
-        {() => <Redirect to="/dashboard" />}
+        {() => <ProtectedRoute component={VerifyEmail} />}
       </Route>
 
       {/* Protected routes */}

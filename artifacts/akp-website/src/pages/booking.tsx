@@ -125,6 +125,34 @@ export default function Booking() {
         });
       }
 
+      // Attach metadata for server-side access control and auditing
+      const bookingPayload = {
+        userId: user?.id ?? "",
+        customerName: form.name.trim(),
+        email: form.email.trim(),
+        phone: form.phone.trim() || undefined,
+        company: form.company.trim() || undefined,
+        serviceCategory: selectedService as ServiceCategory,
+        requestType,
+        requestDetails: requestDetails.trim(),
+        contactPreference,
+        preferredDate: preferredDate || undefined,
+        preferredTime,
+        attachments: uploadedAttachments,
+        status: "new",
+        notificationsSent: {
+          clientConfirmation: false,
+          adminAlert: false,
+          statusUpdates: [],
+        },
+        meta: {
+          createdFrom: "website_booking_form",
+          clientIp: "",
+        },
+      };
+
+      const id = await createBooking(bookingPayload as any);
+
       const id = await createBooking({
         userId: user?.id ?? "",
         customerName: form.name.trim(),
