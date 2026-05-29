@@ -153,27 +153,6 @@ export default function Booking() {
 
       const id = await createBooking(bookingPayload as any);
 
-      const id = await createBooking({
-        userId: user?.id ?? "",
-        customerName: form.name.trim(),
-        email: form.email.trim(),
-        phone: form.phone.trim() || undefined,
-        company: form.company.trim() || undefined,
-        serviceCategory: selectedService as ServiceCategory,
-        requestType,
-        requestDetails: requestDetails.trim(),
-        contactPreference,
-        preferredDate: preferredDate || undefined,
-        preferredTime,
-        attachments: uploadedAttachments,
-        status: "new",
-        notificationsSent: {
-          clientConfirmation: false,
-          adminAlert: false,
-          statusUpdates: [],
-        },
-      });
-
       setBookingRef(id);
     } catch (err) {
       setSubmitError(err instanceof Error ? err.message : "Submission failed. Please try again.");
