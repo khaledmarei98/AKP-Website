@@ -166,9 +166,9 @@ function useFirebaseAuth() {
       ...(company ? { company } : {}),
       ...(phone ? { phone } : {}),
     });
-    if (!fbUser.emailVerified) {
-      await sendEmailVerification(fbUser);
-    }
+   // if (!fbUser.emailVerified) {
+//   await sendEmailVerification(fbUser);
+// }
   };
 
   const resetPassword = async (email: string) => {
