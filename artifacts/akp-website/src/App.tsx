@@ -49,7 +49,7 @@ function ProtectedRoute({ component: Component }: { component: React.ComponentTy
   const { user } = useAuth();
   if (isLoading) return <LoadingScreen />;
   if (!isAuthenticated) return <Redirect to="/auth/login" />;
-if (user && !user.isVerified) return <Redirect to="/auth/verify-email" />;
+// if (user && !user.isVerified) return <Redirect to="/auth/verify-email" />;
   return <Component />;
 }
 
