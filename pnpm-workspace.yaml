@@ -166,3 +166,9 @@ overrides:
   yaml: "^2.8.3"
   brace-expansion: "^2.0.3"
   postcss: "^8.5.10"
+
+allowBuilds:
+  '@firebase/util': true
+  core-js: true
+  esbuild: true
+  protobufjs: true

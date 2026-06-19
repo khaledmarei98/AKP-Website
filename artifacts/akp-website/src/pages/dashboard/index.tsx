@@ -466,7 +466,7 @@ export default function Dashboard() {
                   },
                   { 
                     label: "Upcoming Bookings", 
-                    value: bookingsLoading ? "..." : String(userBookings.filter(b => b.status !== "completed" && b.status !== "cancelled").length), 
+                    value: bookingsLoading ? "..." : String(userBookings.filter(b => b.status !== "completed" && b.status !== "rejected").length), 
                     icon: Calendar, 
                     change: userBookings.filter(b => b.status === "pending").length > 0 ? `${userBookings.filter(b => b.status === "pending").length} pending` : "No active bookings", 
                     color: "text-amber-500" 
@@ -568,19 +568,19 @@ export default function Dashboard() {
                 <div className="bg-card border border-border rounded-2xl p-6">
                   <h3 className="font-semibold text-foreground mb-4 flex items-center gap-2"><AlertCircle className="w-4 h-4 text-amber-500" /> Important Deadlines</h3>
                   <div className="space-y-3">
-                    {userBookings.filter(b => b.status === "pending" || b.status === "confirmed").length === 0 ? (
+                    {userBookings.filter(b => b.status === "pending" || b.status === "approved").length === 0 ? (
                       <div className="text-center py-4">
                         <p className="text-muted-foreground text-sm">No upcoming deadlines.</p>
                       </div>
                     ) : (
                       userBookings
-                        .filter(b => b.status === "pending" || b.status === "confirmed")
+                        .filter(b => b.status === "pending" || b.status === "approved")
                         .slice(0, 3)
                         .map((b) => {
                           const urgency = b.status === "pending" ? "urgent" : "upcoming";
-                          const date = b.date ? (() => {
+                          const date = b.preferredDate ? (() => {
                             try {
-                              const d = (b.date as { toDate?: () => Date }).toDate?.() ?? new Date(b.date as string);
+                              const d = (b.preferredDate as any).toDate?.() ?? new Date(b.preferredDate);
                               return d.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
                             } catch { return "—"; }
                           })() : "TBD";
