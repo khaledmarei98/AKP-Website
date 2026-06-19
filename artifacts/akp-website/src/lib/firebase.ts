@@ -14,23 +14,14 @@ const firebaseConfig = {
   measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID || "G-BNDG2XG2HX",
 };
 
-export const isConfigured = Boolean(
-  firebaseConfig.apiKey &&
-  firebaseConfig.authDomain &&
-  firebaseConfig.projectId &&
-  firebaseConfig.storageBucket &&
-  firebaseConfig.messagingSenderId &&
-  firebaseConfig.appId
-);
+export const isConfigured = true;
 
 const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
 
-export const auth = app ? getAuth(app) : null;
-export const db = app ? getFirestore(app) : null;
-export const storage = app ? getStorage(app) : null;
+export const auth = getAuth(app);
+export const db = getFirestore(app);
+export const storage = getStorage(app);
 
-export const analytics = app
-  ? isSupported()
-      .then((yes) => (yes ? getAnalytics(app) : null))
-      .catch(() => null)
-  : Promise.resolve(null);
+export const analytics = isSupported()
+  .then((yes) => (yes ? getAnalytics(app) : null))
+  .catch(() => null);
