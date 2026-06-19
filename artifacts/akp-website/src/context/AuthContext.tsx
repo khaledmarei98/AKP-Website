@@ -9,7 +9,7 @@ import {
   sendEmailVerification,
   type User as FirebaseUser,
 } from "firebase/auth";
-import { auth, isConfigured } from "@/lib/firebase";
+import { auth } from "@/lib/firebase";
 import { getUserProfile, createUserProfile, updateDocument, COLLECTIONS, type FirestoreUser } from "@/lib/firestore";
 import type { User, AuthState, UserRole } from "@/types";
 
@@ -39,77 +39,7 @@ function mapFirestoreUser(fbUser: FirebaseUser, profile: FirestoreUser | null): 
   };
 }
 
-// ─── Mock fallback (used when Firebase is not configured) ─────────────────────
-
-const MOCK_USER: User = {
-  id: "demo_usr_001",
-  name: "Ahmed Karim",
-  email: "ahmed@delta-industries.com",
-  role: "client",
-  company: "Delta Industries",
-  isVerified: true,
-  createdAt: "2024-01-15",
-};
-
-function useMockAuth() {
-  const [state, setState] = useState<AuthState>({
-    user: null,
-    isAuthenticated: false,
-    isLoading: true,
-  });
-
-  useEffect(() => {
-    const stored = localStorage.getItem("akp_demo_user");
-    if (stored) {
-      try {
-        setState({ user: JSON.parse(stored) as User, isAuthenticated: true, isLoading: false });
-      } catch {
-        setState({ user: null, isAuthenticated: false, isLoading: false });
-      }
-    } else {
-      setState((s) => ({ ...s, isLoading: false }));
-    }
-  }, []);
-
-  const login = async (email: string, _password: string) => {
-    await new Promise((r) => setTimeout(r, 800));
-    const user = { ...MOCK_USER, email };
-    localStorage.setItem("akp_demo_user", JSON.stringify(user));
-    setState({ user, isAuthenticated: true, isLoading: false });
-  };
-
-  const logout = async () => {
-    localStorage.removeItem("akp_demo_user");
-    setState({ user: null, isAuthenticated: false, isLoading: false });
-  };
-
-  const register = async (name: string, email: string, _password: string, role: UserRole = "client", company?: string, phone?: string) => {
-    await new Promise((r) => setTimeout(r, 1000));
-    const user: User = { id: `demo_${Date.now()}`, name, email, phone, role, company, isVerified: true, createdAt: new Date().toISOString() };
-    localStorage.setItem("akp_demo_user", JSON.stringify(user));
-    setState({ user, isAuthenticated: true, isLoading: false });
-  };
-
-  const resetPassword = async (_email: string) => {
-    await new Promise((r) => setTimeout(r, 800));
-  };
-
-  const updateUserProfileFn = async (data: Partial<Pick<User, "name" | "company" | "avatar" | "phone">>) => {
-    setState((prev) => {
-      if (!prev.user) return prev;
-      const updated = { ...prev.user, ...data };
-      localStorage.setItem("akp_demo_user", JSON.stringify(updated));
-      return { ...prev, user: updated };
-    });
-  };
-
-  const sendVerificationEmail = async () => { /* no-op in demo mode */ };
-  const refreshUser = async () => { /* no-op in demo mode */ };
-
-  return { ...state, login, logout, register, resetPassword, updateUserProfile: updateUserProfileFn, sendVerificationEmail, refreshUser };
-}
-
-// ─── Real Firebase auth ────────────────────────────────────────────────────────
+// ─── Firebase auth ────────────────────────────────────────────────────────────────
 
 function useFirebaseAuth() {
   const [state, setState] = useState<AuthState>({
@@ -226,11 +156,8 @@ function useFirebaseAuth() {
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const firebaseAuth = useFirebaseAuth();
-  const mockAuth = useMockAuth();
 
-  const value = isConfigured ? firebaseAuth : mockAuth;
-
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={firebaseAuth}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth() {

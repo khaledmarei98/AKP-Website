@@ -68,34 +68,6 @@ const adminNavItems: { id: Section; icon: typeof LayoutDashboard; label: string;
   { id: "certificates_admin", icon: Award, label: "Certificates Admin" },
 ];
 
-const documents = [
-  { id: 1, name: "Q1 2025 Financial Statements.pdf", type: "PDF", size: "2.4 MB", date: "Apr 15, 2025", status: "Reviewed" },
-  { id: 2, name: "March Payroll Report.xlsx", type: "Excel", size: "1.1 MB", date: "Apr 1, 2025", status: "Pending Review" },
-  { id: 3, name: "VAT Return Q1 2025.pdf", type: "PDF", size: "0.8 MB", date: "Mar 28, 2025", status: "Approved" },
-  { id: 4, name: "Employee Contracts Bundle.pdf", type: "PDF", size: "5.2 MB", date: "Mar 20, 2025", status: "Archived" },
-];
-
-const invoices = [
-  { id: "INV-2025-042", description: "AKP Advisory Services — April 2025", amount: "EGP 6,500", date: "Apr 1, 2025", due: "Apr 30, 2025", status: "Pending" },
-  { id: "INV-2025-038", description: "AKP Advisory Services — March 2025", amount: "EGP 6,500", date: "Mar 1, 2025", due: "Mar 31, 2025", status: "Paid" },
-  { id: "INV-2025-031", description: "Payroll Processing Q1 2025", amount: "EGP 2,200", date: "Jan 5, 2025", due: "Jan 31, 2025", status: "Paid" },
-  { id: "INV-2025-028", description: "Annual Tax Filing 2024", amount: "EGP 4,800", date: "Dec 10, 2024", due: "Dec 31, 2024", status: "Paid" },
-];
-
-const notifications = [
-  { id: 1, type: "warning", message: "VAT filing deadline approaching: 25 May 2025. Please review Q1 2025 returns.", time: "2 hours ago", read: false },
-  { id: 2, type: "success", message: "Your Q1 2025 Financial Report is ready for download.", time: "Yesterday", read: false },
-  { id: 3, type: "info", message: "Request #204 has been updated. Review the latest comments from your advisor.", time: "2 days ago", read: false },
-  { id: 4, type: "info", message: "New course available: Advanced Excel for Accountants 2025 Edition.", time: "4 days ago", read: true },
-  { id: 5, type: "success", message: "Invoice INV-2025-038 has been marked as paid. Thank you!", time: "1 week ago", read: true },
-];
-
-const tickets = [
-  { id: "TKT-245", subject: "Question about Q1 VAT calculation method", status: "open", priority: "medium", created: "Apr 20, 2025", messages: 3 },
-  { id: "TKT-238", subject: "Request for payroll policy update", status: "resolved", priority: "low", created: "Apr 5, 2025", messages: 7 },
-  { id: "TKT-229", subject: "Invoice discrepancy — March 2025", status: "resolved", priority: "high", created: "Mar 15, 2025", messages: 5 },
-];
-
 const statusColors: Record<string, string> = {
   Reviewed: "bg-blue-50 text-blue-700 dark:bg-blue-900/20 dark:text-blue-400",
   "Pending Review": "bg-amber-50 text-amber-700 dark:bg-amber-900/20 dark:text-amber-400",
@@ -478,10 +450,34 @@ export default function Dashboard() {
               {/* Widgets */}
               <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
                 {[
-                  { label: "Documents", value: "12", icon: FolderOpen, change: "+2 this month", color: "text-blue-500" },
-                  { label: "Active Courses", value: "2", icon: BookOpen, change: "1 in progress", color: "text-purple-500" },
-                  { label: "Upcoming Bookings", value: "1", icon: Calendar, change: "May 22, 2025", color: "text-amber-500" },
-                  { label: "Open Invoices", value: "1", icon: Receipt, change: "EGP 6,500 due", color: "text-red-500" },
+                  { 
+                    label: "Documents", 
+                    value: documentsLoading ? "..." : String(userDocuments.length), 
+                    icon: FolderOpen, 
+                    change: userDocuments.length > 0 ? `${userDocuments.length} total` : "No documents", 
+                    color: "text-blue-500" 
+                  },
+                  { 
+                    label: "Active Courses", 
+                    value: enrollmentsLoading ? "..." : String(enrollments.length), 
+                    icon: BookOpen, 
+                    change: enrollments.length > 0 ? `${enrollments.length} enrolled` : "Not enrolled", 
+                    color: "text-purple-500" 
+                  },
+                  { 
+                    label: "Upcoming Bookings", 
+                    value: bookingsLoading ? "..." : String(userBookings.filter(b => b.status !== "completed" && b.status !== "cancelled").length), 
+                    icon: Calendar, 
+                    change: userBookings.filter(b => b.status === "pending").length > 0 ? `${userBookings.filter(b => b.status === "pending").length} pending` : "No active bookings", 
+                    color: "text-amber-500" 
+                  },
+                  { 
+                    label: "Open Invoices", 
+                    value: paymentsLoading ? "..." : String(pendingPayments.length), 
+                    icon: Receipt, 
+                    change: pendingPayments.length > 0 ? `EGP ${outstandingBalance.toLocaleString()} due` : "No pending invoices", 
+                    color: "text-red-500" 
+                  },
                 ].map((w, i) => (
                   <motion.div
                     key={w.label}
@@ -572,19 +568,33 @@ export default function Dashboard() {
                 <div className="bg-card border border-border rounded-2xl p-6">
                   <h3 className="font-semibold text-foreground mb-4 flex items-center gap-2"><AlertCircle className="w-4 h-4 text-amber-500" /> Important Deadlines</h3>
                   <div className="space-y-3">
-                    {[
-                      { label: "VAT Filing — Q1 2025", date: "May 25, 2025", urgency: "urgent" },
-                      { label: "Social Insurance — May", date: "May 31, 2025", urgency: "upcoming" },
-                      { label: "Annual Tax Return 2025", date: "Apr 30, 2026", urgency: "normal" },
-                    ].map((d, i) => (
-                      <div key={i} className="flex items-center justify-between text-sm">
-                        <div className="flex items-center gap-2">
-                          <div className={`w-2 h-2 rounded-full ${d.urgency === "urgent" ? "bg-red-500" : d.urgency === "upcoming" ? "bg-amber-500" : "bg-green-500"}`} />
-                          <span className="text-foreground">{d.label}</span>
-                        </div>
-                        <span className={`text-xs font-medium ${d.urgency === "urgent" ? "text-red-500" : "text-muted-foreground"}`}>{d.date}</span>
+                    {userBookings.filter(b => b.status === "pending" || b.status === "confirmed").length === 0 ? (
+                      <div className="text-center py-4">
+                        <p className="text-muted-foreground text-sm">No upcoming deadlines.</p>
                       </div>
-                    ))}
+                    ) : (
+                      userBookings
+                        .filter(b => b.status === "pending" || b.status === "confirmed")
+                        .slice(0, 3)
+                        .map((b) => {
+                          const urgency = b.status === "pending" ? "urgent" : "upcoming";
+                          const date = b.date ? (() => {
+                            try {
+                              const d = (b.date as { toDate?: () => Date }).toDate?.() ?? new Date(b.date as string);
+                              return d.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
+                            } catch { return "—"; }
+                          })() : "TBD";
+                          return (
+                            <div key={b.id} className="flex items-center justify-between text-sm">
+                              <div className="flex items-center gap-2">
+                                <div className={`w-2 h-2 rounded-full ${urgency === "urgent" ? "bg-red-500" : "bg-amber-500"}`} />
+                                <span className="text-foreground">{SERVICE_LABELS[b.serviceCategory] ?? b.serviceCategory}</span>
+                              </div>
+                              <span className={`text-xs font-medium ${urgency === "urgent" ? "text-red-500" : "text-muted-foreground"}`}>{date}</span>
+                            </div>
+                          );
+                        })
+                    )}
                   </div>
                 </div>
               </div>
@@ -855,7 +865,7 @@ export default function Dashboard() {
                 {[
                   { label: "Open Tickets", value: String(userTickets.filter((t) => t.status !== "resolved" && t.status !== "closed").length), icon: FileText, color: "text-blue-500" },
                   { label: "Resolved", value: String(userTickets.filter((t) => t.status === "resolved" || t.status === "closed").length), icon: CheckCircle, color: "text-emerald-500" },
-                  { label: "Avg. Response", value: "< 24h", icon: Clock, color: "text-accent" },
+                  { label: "Avg. Response", value: userTickets.length > 0 ? "~24h" : "N/A", icon: Clock, color: "text-accent" },
                 ].map((s) => (
                   <div key={s.label} className="bg-card border border-border rounded-2xl p-5 flex items-center gap-4">
                     <div className="w-10 h-10 rounded-xl bg-muted flex items-center justify-center shrink-0">
