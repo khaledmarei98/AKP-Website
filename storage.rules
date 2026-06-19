@@ -166,6 +166,18 @@ service firebase.storage {
       allow delete: if isAdmin();
     }
 
+    // ─── Payment proofs ──────────────────────────────────────────────────────
+    // clients/{userId}/payments/{filename}
+    //   Read:  owning user or admin
+    //   Write: owning user (max 10 MB, document formats or images)
+    match /clients/{userId}/payments/{filename} {
+      allow read: if isOwner(userId) || isAdmin();
+      allow write: if isOwner(userId)
+                   && isUnderSizeLimit(10)
+                   && (isDocumentFile() || isImageFile());
+      allow delete: if isOwner(userId) || isAdmin();
+    }
+
     // ─── Deny all other paths ─────────────────────────────────────────────────
     // Any path not explicitly matched above is denied.
     // This is implicit in Firebase Storage rules, but making it explicit
